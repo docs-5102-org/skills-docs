@@ -1,0 +1,27 @@
+---
+description: Skills 全局索引，列出所有可用规则
+alwaysApply: true
+---
+
+# 可用 Skills 索引
+
+以下 skills 已配置，遇到对应任务时请自动加载对应规则：
+
+- **algorithmic-art**: 
+- **brand-guidelines**: 
+- **canvas-design**: 
+- **doc-coauthoring**: 
+- **docx**: 
+- **frontend-design**: 
+- **internal-comms**: 
+- **mcp-builder**: 
+- **pdf**: 
+- **pptx**: 
+- **skill-creator**: 
+- **slack-gif-creator**: 
+- **theme-factory**: 
+- **web-artifacts-builder**: 
+- **webapp-testing**: 
+- **xlsx**: 
+
+> 通过 @rulename 手动引用，或根据 globs 自动触发。

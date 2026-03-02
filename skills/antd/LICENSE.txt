@@ -1,0 +1,6 @@
+Ant Design is released under the MIT License.
+https://github.com/ant-design/ant-design/blob/master/LICENSE
+
+This skill document (SKILL.md, components.md) is a developer reference guide
+compiled from the official Ant Design documentation (https://ant.design).
+Original documentation copyright © Ant Group. Used for reference purposes.
