@@ -8,6 +8,29 @@ This repository contains documentation and resources for 16 different skills org
 
 ---
 
+## 安装单个 Skill
+
+无需克隆整个仓库，用以下命令单独下载某个 skill：
+
+```bash
+# 将 skill-name 替换为你想要的 skill 目录名，例如 frontend-design
+mkdir -p ~/.claude/skills/skill-name
+curl -o ~/.claude/skills/skill-name/SKILL.md \
+  https://raw.githubusercontent.com/docs-5102-org/skills-docs/main/skills/skill-name/SKILL.md
+```
+
+例如，安装 `frontend-design`：
+
+```bash
+mkdir -p ~/.claude/skills/frontend-design
+curl -o ~/.claude/skills/frontend-design/SKILL.md \
+  https://raw.githubusercontent.com/docs-5102-org/skills-docs/main/skills/frontend-design/SKILL.md
+```
+
+下载完成后重启 Claude Code 会话即可自动识别。如果该 skill 包含 `scripts/` 或 `references/` 子目录，需要对其中的文件逐一单独下载。
+
+---
+
 ## 🎨 Creative & Design Skills
 
 ### [Algorithmic Art](skills/algorithmic-art/SKILL.md)
