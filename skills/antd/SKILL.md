@@ -19,6 +19,44 @@ Ant Design is an enterprise-class React UI library by Ant Group. Current stable 
 
 ---
 
+## ⚠️ Umi / @umijs/max Import Rule — CRITICAL
+
+When the project uses **Umi** or **@umijs/max**, ALL framework-level APIs **must** be imported from `@umijs/max`, never from `umi`.
+
+```tsx
+// ✅ CORRECT — always use @umijs/max
+import { Access, useAccess, history, useModel, useRequest, Link, NavLink } from '@umijs/max';
+
+// ❌ WRONG — do NOT use 'umi' directly
+import { history, useModel } from 'umi';
+```
+
+### Why
+
+`@umijs/max` is the modern, feature-complete preset that supersedes `umi`. It re-exports everything from `umi` and adds built-in plugins (access control, initial state, request, layout, etc.). Using `umi` directly in a `@umijs/max` project causes:
+- Missing plugin APIs (e.g. `useAccess`, `useModel` not found)
+- Potential duplicate React contexts
+- Build inconsistencies
+
+### Common @umijs/max APIs
+
+| API | Import |
+|-----|--------|
+| Routing (`history`, `useNavigate`, `Link`, `NavLink`) | `@umijs/max` |
+| Access control (`Access`, `useAccess`) | `@umijs/max` |
+| Global state (`useModel`) | `@umijs/max` |
+| Data fetching (`useRequest`) | `@umijs/max` |
+| App layout (`defineApp`, `defineLayout`) | `@umijs/max` |
+| Request instance (`request`) | `@umijs/max` |
+
+### How to detect which one the project uses
+
+1. Check `package.json` — if `@umijs/max` is listed as a dependency, **always use `@umijs/max`**.
+2. Check `config/config.ts` or `.umirc.ts` — presence of `@umijs/max` preset confirms it.
+3. When uncertain, default to `@umijs/max` (it is backwards-compatible with `umi`).
+
+---
+
 ## Quick Start
 
 ```bash
