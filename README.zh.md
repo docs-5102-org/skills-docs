@@ -103,7 +103,7 @@ curl -o ~/.claude/skills/frontend-design/SKILL.md \
 | `templates/` | 可复用模板 |
 | `references/` 或 `reference.md` | 补充参考资料、深入说明和示例 |
 
-## 贡献指南
+## 贡献指南2
 
 | 步骤 | 要求 |
 |---|---|
