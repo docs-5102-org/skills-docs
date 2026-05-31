@@ -1,517 +1,122 @@
 # 技能文档库
 
-一个专业的技能集合，涵盖多种文档格式的创建和处理、界面设计、应用程序构建和测试。
-
-## 概述
-
-本仓库包含 19 个不同技能的详细文档和资源，按用途分类组织。每个技能都包括详细的使用指南、代码示例和最佳实践。
-
----
-
-## 🎨 创意与设计技能
-
-### [算法艺术](skills/algorithmic-art/SKILL.md)
-使用计算美学和 p5.js 创建生成艺术，支持随机种子和交互式参数探索。适合算法艺术、流场、粒子系统和交互式可视化。
-
-**输出格式**: `.md`（理论文档）+ `.html` + `.js`（p5.js 实现）
-
-### [画布设计](skills/canvas-design/SKILL.md)
-创建精美的视觉设计和艺术作品，输出为 `.png` 和 `.pdf` 格式。开发设计理念和美学运动，然后通过原创艺术作品进行视觉表现。
-
-**输出格式**: `.md`（理论）+ `.pdf`/`.png`（设计作品）
-
-### [前端设计](skills/frontend-design/SKILL.md)
-构建具有高设计质量、独特风格的前端界面和网页组件。创建网站、登陆页、仪表板、React 组件等，避免通用的 AI 美学。
-
-**输出格式**: HTML/CSS/React 组件
-
-### [品牌指南](skills/brand-guidelines/SKILL.md)
-应用 Anthropic 官方品牌标识。包括品牌色、排版、视觉格式标准和企业设计资源。
-
-**输出格式**: 遵循品牌规范的样式化组件
-
-### [主题工厂](skills/theme-factory/SKILL.md)
-访问 10 个预设的专业主题，包含精心挑选的色彩调色板和字体配对。为演示文稿、幻灯片、文档和登陆页应用一致的专业风格。
-
-**输出格式**: 具有统一视觉风格的主题化产物
-
----
-
-## 📄 文档处理技能
-
-### [Word 文档 (DOCX)](skills/docx/SKILL.md)
-创建、读取、编辑和处理 Word 文档（`.docx`）。支持格式化、目录、跟踪修订、评论、图像，以及转换旧版 `.doc` 文件。
-
-**主要功能**：
-- 读取和分析内容
-- 创建新文档
-- 编辑现有文档
-- 查找和替换操作
-- 使用模板和格式设置
-
-### [PDF 处理](skills/pdf/SKILL.md)
-全面的 PDF 处理能力：读取/提取文本和表格、合并/分割 PDF、填充表单、添加水印、加密/解密、提取图像、OCR 扫描 PDF。
-
-**主要功能**：
-- 文本和表格提取
-- 合并和分割
-- 表单填充
-- 水印和加密
-- 图像提取
-- OCR 能力
-
-### [PowerPoint 演示文稿 (PPTX)](skills/pptx/SKILL.md)
-创建、读取、编辑和管理 PowerPoint 演示文稿。处理幻灯片、模板、布局、演讲备注和评论。提取内容或从零开始创建演示文稿。
-
-**主要功能**：
-- 创建演示文稿
-- 读取/提取内容
-- 编辑和修改
-- 处理模板
-- 管理演讲备注和评论
-
-### [Excel 电子表格 (XLSX)](skills/xlsx/SKILL.md)
-打开、创建、读取、编辑和修复电子表格。处理 `.xlsx`、`.xlsm`、`.csv` 和 `.tsv` 文件。创建财务模型、清理混乱数据、添加公式、应用专业格式。
-
-**主要功能**：
-- 创建和编辑电子表格
-- 数据清理和重组
-- 财务建模
-- 公式和计算
-- 专业格式设置
-
----
-
-## 🛠️ 开发与技术技能
-
-### [Web 制品构建器](skills/web-artifacts-builder/SKILL.md)
-使用现代前端技术构建复杂的多组件 HTML 制品：React 18、TypeScript、Vite、Tailwind CSS 和 shadcn/ui 组件。
-
-**技术栈**: React 18 + TypeScript + Vite + Tailwind CSS + shadcn/ui
-
-**输出格式**: 单一捆绑的 HTML 文件
-
-### [Ant Design 组件库](skills/antd/SKILL.md)
-使用 Ant Design（antd）企业级 React UI 库构建企业应用和管理系统。支持组件开发、主题定制、设计令牌配置。
-
-**特点**：
-- 企业级 React UI 库
-- v5.x 版本（CSS-in-JS）
-- Design Tokens 主题系统
-- 丰富的组件库（Button、Table、Form、Modal 等）
-
-**输出格式**: React 组件
-
-### [MCP 服务器构建](skills/mcp-builder/SKILL.md)
-创建高质量的 Model Context Protocol（MCP）服务器，使 LLM 能够与外部服务交互。支持 Python（FastMCP）或 Node/TypeScript（MCP SDK）。
-
-**工作流程**：
-1. 设计工具规范
-2. 实现工具
-3. 测试和评估
-4. 文档化和部署
-
-### [技能创建者](skills/skill-creator/SKILL.md)
-从零开始创建新技能，修改和改进现有技能，测量技能性能。运行评估、进行方差分析、优化技能描述以获得更好的触发精度。
-
-**工作流程**：
-- 起草技能规范
-- 创建测试提示
-- 运行评估
-- 定量分析结果
-- 迭代和精化
-- 扩展测试集
-
-### [Web 应用测试](skills/webapp-testing/SKILL.md)
-使用 Playwright 测试本地 web 应用。验证前端功能、调试 UI 行为、捕获截图、查看浏览器日志。
-
-**工具**: Playwright + Python 脚本
-
-### [FastAPI 开发](skills/python-fastapi/SKILL.md)
-基于 FastAPI 框架的全栈后端开发技能。包含 API 路由、SQLModel 数据库模型、CRUD 操作、统一响应封装、后台任务和日志处理。
-
-**技术栈**: FastAPI + SQLModel + Pydantic + pytest
-
-**主要功能**：
-- API 路由开发
-- 数据库模型定义
-- CRUD 操作
-- 统一响应格式
-- 后台任务处理
-- 日志管理
-- 接口单元测试
-
-**输出格式**: Python 后端服务
-
-### [PowerShell 脚本](skills/powershell/SKILL.md)
-编写、审查、修复和解释 PowerShell 脚本。支持 Windows 自动化、系统管理、文件操作、跨平台脚本开发。
-
-**特点**：
-- PowerShell 5.1+ 和 PowerShell Core
-- Windows 自动化和系统管理
-- 文件和目录操作
-- 错误处理和执行策略
-- PowerShell 模块开发
-
-**输出格式**: `.ps1` 脚本文件
-
----
-
-## 🎬 内容与动画技能
-
-### [Slack GIF 创建器](skills/slack-gif-creator/SKILL.md)
-创建为 Slack 优化的动画 GIF。提供约束条件、验证工具和动画概念。
-
-**规范**：
-- **Emoji GIF**: 128×128，时长不超过 3 秒
-- **消息 GIF**: 480×480
-- **帧率**: 10-30 FPS（较低 = 较小文件）
-- **颜色**: 48-128（较少 = 较小文件）
-
----
-
-## 📋 沟通与交流技能
-
-### [内部通信](skills/internal-comms/SKILL.md)
-撰写专业的内部通信文档，包括状态报告、3P 更新（进度、计划、问题）、公司新闻通讯、常见问题解答和事件报告。使用公司标准格式和模板。
-
-**文档类型**：
-- 状态报告
-- 领导力更新
-- 3P 更新
-- 新闻通讯
-- 常见问题解答
-- 事件报告
-
-### [文档共同创作](skills/doc-coauthoring/SKILL.md)
-为结构化文档编写提供系统化的工作流程。用于协作编写提案、技术规范、设计文档、决策文档等。通过三个阶段引导用户完成高效的文档创建过程。
-
-**工作流程**：
-1. **上下文收集** - 用户提供相关背景信息
-2. **内容精化与结构化** - 迭代优化文档内容
-3. **读者测试** - 验证文档有效性
-
-**应用场景**：
-- 技术规范和 RFC
-- 产品需求文档（PRD）
-- 设计文档
-- 决策文档
-- 项目提案
-
-**输出格式**: 结构化文档
-
----
-
-## 📊 快速参考
-
-| 技能 | 主要输出 | 最适用于 |
-|-------|---|---|
-| 算法艺术 | `.js`、`.html`、`.md` | 生成艺术、可视化 |
-| 画布设计 | `.pdf`、`.png`、`.md` | 静态视觉设计 |
-| 前端设计 | HTML/React/CSS | Web 界面、组件 |
-| 品牌指南 | 样式化制品 | 品牌一致性 |
-| 主题工厂 | 主题化制品 | 专业风格设置 |
-| DOCX | `.docx` | Word 文档 |
-| PDF | `.pdf` | PDF 操作 |
-| PPTX | `.pptx` | 演示文稿 |
-| XLSX | `.xlsx` | 电子表格 |
-| Web 制品 | `.html` | 复杂 web 制品 |
-| Ant Design | React 组件 | 企业 UI 组件 |
-| 文档共同创作 | 文档 | 协作文档编写 |
-| MCP 构建 | MCP 服务器 | LLM 集成 |
-| FastAPI | Python 服务 | 后端 API 开发 |
-| PowerShell | `.ps1` 脚本 | 系统自动化 |
-| 技能创建 | 技能 | 创建/改进技能 |
-| Web 测试 | 测试报告 | 前端测试 |
-| Slack GIF | `.gif` | Slack 动画 |
-| 内部通信 | 文档 | 商务沟通 |
-
----
-
-## 🚀 在大模型中应用技能的示例
-
-### 示例 1：生成市场分析报告
-
-**用户需求**: "为我们的新产品生成一份详细的市场分析报告"
-
-**技能应用流程**：
-
-1. **使用 DOCX 技能** - 创建专业 Word 文档框架
-   - 创建目录结构
-   - 设置标题和格式
-   - 添加页码和风格
-
-2. **使用 XLSX 技能** - 生成市场数据表格
-   - 创建竞争对手分析表
-   - 添加财务预测模型
-   - 应用专业的蓝色输入/黑色公式/绿色链接配色方案
-
-3. **使用 PPTX 技能** - 创建执行总结演示文稿
-   - 从报告中提取关键数据
-   - 设计信息图表
-   - 添加演讲备注
-
-4. **使用 PDF 技能** - 最终输出
-   - 合并多个 PDF 部分
-   - 添加水印和安全设置
-
-**预期输出**: 完整的市场分析报告包（Word + Excel + PowerPoint + PDF）
-
----
-
-### 示例 2：设计产品登陆页面
-
-**用户需求**: "为我们的 SaaS 产品创建一个现代化的登陆页面"
-
-**技能应用流程**：
-
-1. **使用前端设计技能** - 规划 UI 美学方向
-   - 定义品牌色和排版
-   - 选择设计风格（极简主义、现代、企业）
-   - 创建组件库设计
-
-2. **使用品牌指南技能** - 确保品牌一致性
-   - 应用官方颜色 (#d97757 橙色、#6a9bcc 蓝色)
-   - 匹配品牌字体和排版规范
-
-3. **使用 Web 制品构建器技能** - 实现交互式原型
-   - React 18 + TypeScript 开发
-   - Tailwind CSS 样式设计
-   - shadcn/ui 组件集成
-   - 输出单一 HTML 文件
-
-4. **使用 Web 应用测试技能** - 验证功能和样式
-   - Playwright 自动化测试
-   - 响应式设计验证
-   - 浏览器兼容性检查
-
-**预期输出**: 完整的交互式登陆页面
-
----
-
-### 示例 3：生成算法艺术作品集
-
-**用户需求**: "为我的艺术展览创建一个生成艺术系列"
-
-**技能应用流程**：
-
-1. **使用算法艺术技能** - 开发艺术理念
-   - 编写艺术哲学宣言
-   - 设计参数化生成规则
-   - 实现 p5.js 交互式可视化
-
-2. **使用画布设计技能** - 创建配套的视觉资料
-   - 设计展览海报
-   - 创建作品说明文档
-   - 生成 PDF 展览手册
-
-3. **使用 Web 制品构建器技能** - 构建在线展览平台
-   - 展示生成艺术作品
-   - 提供参数交互控制
-   - 支持作品导出功能
-
-**预期输出**: 艺术系列（哲学文档 + p5.js + 海报 + 在线展览）
-
----
-
-### 示例 4：创建内部培训文档
-
-**用户需求**: "为新员工创建公司培训材料"
-
-**技能应用流程**：
-
-1. **使用内部通信技能** - 规划培训内容结构
-   - 编写清晰的章节和指南
-   - 使用公司沟通标准格式
-   - 创建 FAQ 部分
-
-2. **使用 PPTX 技能** - 制作培训演示文稿
-   - 创建视觉化讲解幻灯片
-   - 添加演讲备注和讲师指南
-
-3. **使用 DOCX 技能** - 生成培训手册
-   - 整合内容成完整文档
-   - 添加目录和索引
-   - 应用统一格式
-
-4. **使用主题工厂技能** - 应用专业主题
-   - 选择适合公司文化的主题
-   - 统一色彩和字体
-   - 确保视觉一致性
-
-**预期输出**: 完整的培训套件（演示文稿 + 手册 + FAQ）
-
----
-
-### 示例 5：开发内部工具集成
-
-**用户需求**: "为我们的工作流创建一个 MCP 服务器来集成外部 API"
-
-**技能应用流程**：
-
-1. **使用 MCP 服务器构建技能** - 设计服务器架构
-   - 定义工具规范
-   - 设计 API 集成方案
-   - 规划错误处理
-
-2. **使用技能创建者技能** - 创建相关的 AI 技能
-   - 编写工具使用指南
-   - 创建评估测试用例
-   - 优化触发条件
-
-3. **使用 Web 应用测试技能** - 验证集成
-   - 端到端测试
-   - 性能基准测试
-   - 错误场景验证
-
-**预期输出**: 生产级 MCP 服务器 + 配套文档
-
----
-
-### 示例 6：快速创建 Slack 动画
-
-**用户需求**: "为我们的 Slack 频道创建一个品牌动画表情符号"
-
-**技能应用流程**：
-
-1. **使用品牌指南技能** - 确定品牌元素
-   - 提取官方颜色和标志
-   - 设计简化的图形
-
-2. **使用 Slack GIF 创建器技能** - 生成优化动画
-   - 设计 128×128 像素表情
-   - 保持动画 < 3 秒
-   - 优化文件大小
-
-**预期输出**: 优化的 Slack emoji GIF
-
----
-
-### 示例 7：开发企业级管理后台
-
-**用户需求**: "为我们的 SaaS 平台创建一个管理后台系统"
-
-**技能应用流程**：
-
-1. **使用 FastAPI 开发技能** - 构建后端 API
-   - 设计数据库模型（SQLModel）
-   - 实现 CRUD 操作
-   - 统一响应格式
-   - 后台任务处理
-   - 日志记录
-
-2. **使用 Ant Design 组件库技能** - 构建前端 UI
-   - 使用企业级组件（Table、Form、Modal）
-   - 主题定制和设计令牌配置
-   - 构建页面和仪表板
-
-3. **使用 Web 应用测试技能** - 验证集成
-   - pytest 接口测试
-   - Playwright UI 自动化测试
-   - 性能测试
-
-**预期输出**: 完整的企业管理系统（后端 API + 前端管理页面）
-
----
-
-### 示例 8：系统自动化和批处理
-
-**用户需求**: "为 Windows 环境创建一个自动备份和日志清理脚本"
-
-**技能应用流程**：
-
-1. **使用 PowerShell 脚本技能** - 编写自动化脚本
-   - 文件备份和压缩
-   - 日志轮转和清理
-   - 定时任务调度
-   - 错误处理和日志记录
-
-2. **使用内部通信技能** - 创建运维文档
-   - 编写脚本说明文档
-   - 创建运维指南
-
-**预期输出**: 生产级 PowerShell 脚本集
-
----
-
-### 示例 9：全栈数据大屏应用
-
-**用户需求**: "为公司创建一个实时数据可视化大屏"
-
-**技能应用流程**：
-
-1. **使用 FastAPI 开发技能** - 构建数据服务
-   - 设计数据查询 API
-   - WebSocket 实时数据推送
-   - 数据缓存策略
-
-2. **使用 Ant Design 组件库技能** - 设计 UI 组件
-   - 创建仪表板布局
-   - 使用图表和数据展示组件
-
-3. **使用 Web 制品构建器技能** - 打包最终产品
-   - React 组件集成
-   - WebSocket 实时更新
-   - 响应式设计
-
-**预期输出**: 完整的实时数据大屏应用
-
----
-
-### 更多示例
-
-* [如何在不同平台的IDE中应用skills](./use.md)
-
----
+一个面向 Agent 工作流的技能集合，覆盖文档处理、视觉设计、前端开发、应用工程、技术写作、测试与自动化等场景。
+
+当前仓库共包含 **23 个 Skill**。每个 Skill 都位于 `skills/` 下的独立目录中，并通过 `SKILL.md` 描述触发场景、执行流程、约束规则和最佳实践。
+
+## 安装单个 Skill
+
+无需克隆整个仓库，可以直接下载某个 Skill：
+
+```bash
+# 将 skill-name 替换为目标目录名，例如 frontend-design
+mkdir -p ~/.claude/skills/skill-name
+curl -o ~/.claude/skills/skill-name/SKILL.md \
+  https://raw.githubusercontent.com/docs-5102-org/skills-docs/main/skills/skill-name/SKILL.md
+```
+
+示例：
+
+```bash
+mkdir -p ~/.claude/skills/frontend-design
+curl -o ~/.claude/skills/frontend-design/SKILL.md \
+  https://raw.githubusercontent.com/docs-5102-org/skills-docs/main/skills/frontend-design/SKILL.md
+```
+
+安装完成后重启 Claude Code 会话即可识别。若 Skill 包含 `scripts/`、`templates/` 或 `references/` 等配套目录，请按需同步下载。
+
+## Skill 总览
+
+| # | 技能名称 | 英文标识 | 分类 | 核心用途 | 主要输出 |
+|---|---|---|---|---|---|
+| 1 | 算法艺术 | [`algorithmic-art`](skills/algorithmic-art/SKILL.md) | 创意设计 | 使用 p5.js、随机种子、参数控制创建生成艺术、流场和粒子系统 | `.md`、`.html`、`.js` |
+| 2 | Ant Design | [`antd`](skills/antd/SKILL.md) | 开发技术 | 使用 antd 构建企业级 React UI、后台页面、组件和主题 | React 组件 |
+| 3 | 品牌指南 | [`brand-guidelines`](skills/brand-guidelines/SKILL.md) | 创意设计 | 应用 Anthropic 品牌色、字体和视觉格式 | 品牌化制品 |
+| 4 | 画布设计 | [`canvas-design`](skills/canvas-design/SKILL.md) | 创意设计 | 创建静态视觉艺术、海报、设计导向 PNG/PDF 作品 | `.png`、`.pdf`、`.md` |
+| 5 | UTF-8 编码 | [`cli-encoding`](skills/cli-encoding/SKILL.md) | 工具框架 | 处理文件编码安全，尤其是 Windows/PowerShell 读写源码文件 | 编码规范 |
+| 6 | 文档协作 | [`doc-coauthoring`](skills/doc-coauthoring/SKILL.md) | 内容写作 | 协作编写技术规范、PRD、设计文档、决策文档和提案 | 结构化文档 |
+| 7 | Word 文档 | [`docx`](skills/docx/SKILL.md) | 文档处理 | 创建、读取、编辑 Word 文档，处理格式、评论、修订和图像 | `.docx` |
+| 8 | 前端设计 | [`frontend-design`](skills/frontend-design/SKILL.md) | 创意设计 | 构建高质量网站、仪表板、组件和 UI 系统 | HTML/CSS/React |
+| 9 | 内部通讯 | [`internal-comms`](skills/internal-comms/SKILL.md) | 内容写作 | 撰写状态报告、3P 更新、新闻通讯、FAQ 和事故报告 | 商务文档 |
+| 10 | Java 面试官 | [`java-interviewer`](skills/java-interviewer/SKILL.md) | 教育培训 | 模拟 Java 高级工程师/架构师技术面试并给出反馈 | 面试问题与评价 |
+| 11 | MCP 构建器 | [`mcp-builder`](skills/mcp-builder/SKILL.md) | 开发技术 | 创建 MCP 服务器，让 LLM 与外部服务集成 | MCP Server |
+| 12 | PDF 处理 | [`pdf`](skills/pdf/SKILL.md) | 文档处理 | PDF 文本/表格提取、合并拆分、表单、水印、加密和 OCR | `.pdf` |
+| 13 | PowerShell | [`powershell`](skills/powershell/SKILL.md) | 开发技术 | 编写、审查、修复 PowerShell 脚本和 Windows 自动化任务 | `.ps1` |
+| 14 | PowerPoint | [`pptx`](skills/pptx/SKILL.md) | 文档处理 | 创建、读取、编辑演示文稿、幻灯片模板和演讲备注 | `.pptx` |
+| 15 | FastAPI | [`python-fastapi`](skills/python-fastapi/SKILL.md) | 开发技术 | 开发 API 路由、SQLModel 模型、CRUD、测试和 HTML 模板 | Python 服务 |
+| 16 | 报价单 DOCX | [`quotation-docx`](skills/quotation-docx/SKILL.md) | 文档处理 | 生成中文项目报价单，包含模块明细、费用汇总、付款方式和里程碑 | `.docx` |
+| 17 | 技能创建器 | [`skill-creator`](skills/skill-creator/SKILL.md) | 工具框架 | 创建、评估、改进和优化 Skill | Skill 定义 |
+| 18 | Slack GIF 创建 | [`slack-gif-creator`](skills/slack-gif-creator/SKILL.md) | 创意设计 | 创建符合 Slack 尺寸、时长和体积约束的 GIF | `.gif` |
+| 19 | 开源工具评测写作 | [`tech-review-writer`](skills/tech-review-writer/SKILL.md) | 内容写作 | 撰写开源 AI 工具深度评测、项目分析和公众号文章 | 文章 |
+| 20 | 主题工厂 | [`theme-factory`](skills/theme-factory/SKILL.md) | 创意设计 | 为文档、演示、页面等应用预设专业主题 | 主题化制品 |
+| 21 | Web 制品构建器 | [`web-artifacts-builder`](skills/web-artifacts-builder/SKILL.md) | 开发技术 | 使用 React、TypeScript、Vite、Tailwind 构建复杂 HTML 制品 | 单文件 `.html` |
+| 22 | Web 应用测试 | [`webapp-testing`](skills/webapp-testing/SKILL.md) | 开发技术 | 使用 Playwright 验证本地 Web 应用、截图和浏览器日志 | 测试报告 |
+| 23 | Excel 电子表格 | [`xlsx`](skills/xlsx/SKILL.md) | 文档处理 | 创建、编辑、清洗电子表格，处理公式、财务模型和格式 | `.xlsx`、`.csv`、`.tsv` |
+
+## 按用途快速查找
+
+| 我需要 | 推荐 Skill |
+|---|---|
+| 创建或编辑 Office 文档 | `docx`、`pdf`、`pptx`、`xlsx`、`quotation-docx` |
+| 设计视觉或交互制品 | `algorithmic-art`、`canvas-design`、`frontend-design`、`brand-guidelines`、`theme-factory`、`slack-gif-creator` |
+| 开发应用、API 或集成 | `python-fastapi`、`antd`、`web-artifacts-builder`、`mcp-builder`、`powershell` |
+| 测试 Web 应用 | `webapp-testing` |
+| 撰写专业内容 | `internal-comms`、`doc-coauthoring`、`tech-review-writer` |
+| 创建或维护 Skill | `skill-creator`、`cli-encoding` |
+| 练习技术面试 | `java-interviewer` |
 
 ## 目录结构
 
-```
-skills/
-├── algorithmic-art/         # 使用 p5.js 的生成艺术
-├── antd/                    # Ant Design 企业级 UI 组件
-├── brand-guidelines/        # Anthropic 品牌风格
-├── canvas-design/           # 视觉设计理念
-├── doc-coauthoring/         # 协作文档编写
-├── docx/                    # Word 文档处理
-├── frontend-design/         # Web UI 设计
-├── internal-comms/          # 商务通信
-├── mcp-builder/             # MCP 服务器开发
-├── pdf/                     # PDF 处理
-├── powershell/              # PowerShell 脚本开发
-├── pptx/                    # PowerPoint 演示文稿
-├── python-fastapi/          # FastAPI 后端开发
-├── skill-creator/           # 创建和改进技能
-├── slack-gif-creator/       # Slack GIF 创建
-├── theme-factory/           # 主题和风格设置
-├── web-artifacts-builder/   # 复杂 web 制品
-├── webapp-testing/          # Web 应用测试
-└── xlsx/                    # Excel 电子表格处理
-```
+| 目录 | Skill |
+|---|---|
+| `skills/algorithmic-art/` | 算法艺术 |
+| `skills/antd/` | Ant Design |
+| `skills/brand-guidelines/` | 品牌指南 |
+| `skills/canvas-design/` | 画布设计 |
+| `skills/cli-encoding/` | UTF-8 编码 |
+| `skills/doc-coauthoring/` | 文档协作 |
+| `skills/docx/` | Word 文档 |
+| `skills/frontend-design/` | 前端设计 |
+| `skills/internal-comms/` | 内部通讯 |
+| `skills/java-interviewer/` | Java 面试官 |
+| `skills/mcp-builder/` | MCP 构建器 |
+| `skills/pdf/` | PDF 处理 |
+| `skills/powershell/` | PowerShell |
+| `skills/pptx/` | PowerPoint |
+| `skills/python-fastapi/` | FastAPI |
+| `skills/quotation-docx/` | 报价单 DOCX |
+| `skills/skill-creator/` | 技能创建器 |
+| `skills/slack-gif-creator/` | Slack GIF 创建 |
+| `skills/tech-review-writer/` | 开源工具评测写作 |
+| `skills/theme-factory/` | 主题工厂 |
+| `skills/web-artifacts-builder/` | Web 制品构建器 |
+| `skills/webapp-testing/` | Web 应用测试 |
+| `skills/xlsx/` | Excel 电子表格 |
 
----
+## 文件说明
 
-## 重要说明
-
-- 每个技能目录都包含一个 `SKILL.md` 文件，提供全面的文档
-- 大多数技能都包含 `scripts/` 目录，包含辅助工具和实用程序
-- 许可证信息在每个技能的 `LICENSE.txt` 文件中
-- 某些技能包含 `reference.md` 文件，包含高级主题和示例
-
----
+| 文件或目录 | 说明 |
+|---|---|
+| `SKILL.md` | Skill 主说明文件，包含触发规则、执行流程和约束 |
+| `LICENSE.txt` | Skill 的许可证或使用条款 |
+| `scripts/` | 辅助脚本、验证脚本和自动化工具 |
+| `templates/` | 可复用模板 |
+| `references/` 或 `reference.md` | 补充参考资料、深入说明和示例 |
 
 ## 贡献指南
 
-添加新技能或更新文档时：
-1. 遵循现有的目录结构
-2. 包含完整的 `SKILL.md` 文件，包括描述和使用指南
-3. 添加 `LICENSE.txt` 文件
-4. 在适当的子目录中包含脚本和示例
-5. 使用新技能信息更新此 README
-
----
+| 步骤 | 要求 |
+|---|---|
+| 1 | 在 `skills/` 下创建稳定的 kebab-case 目录名 |
+| 2 | 编写完整的 `SKILL.md`，包含 frontmatter、描述、触发条件和执行规则 |
+| 3 | 如有许可证要求，添加 `LICENSE.txt` |
+| 4 | 将脚本、模板、参考资料分别放入清晰的子目录 |
+| 5 | 同步更新 `README.md` 和 `README.zh.md` 中的 Skill 表格 |
 
 ## 相关资源
 
-- **英文版本**: 请查看 [README.md](README.md)
-- **主仓库**: [docs-5102-org/skills-docs](https://github.com/docs-5102-org/skills-docs)
+| 资源 | 链接 |
+|---|---|
+| 英文版本 | [README.md](README.md) |
+| 使用示例 | [use.md](use.md) |
+| 主仓库 | [docs-5102-org/skills-docs](https://github.com/docs-5102-org/skills-docs) |

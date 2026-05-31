@@ -82,18 +82,47 @@ function ensureDir(dirPath) {
 // 解析 SKILL.md frontmatter
 // ─────────────────────────────────────────────
 function parseSkillMd(content) {
-  const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/m)
-  if (!frontmatterMatch) {
+  const normalized = content.replace(/^\uFEFF/, '').replace(/\r\n/g, '\n')
+  const allLines = normalized.split('\n')
+
+  if (allLines[0] !== '---') {
     return { meta: {}, body: content }
   }
 
-  const meta = {}
-  frontmatterMatch[1].split('\n').forEach(line => {
-    const [key, ...vals] = line.split(':')
-    if (key && vals.length) meta[key.trim()] = vals.join(':').trim()
-  })
+  const closeIndex = allLines.findIndex((line, index) => index > 0 && line === '---')
+  if (closeIndex === -1) {
+    return { meta: {}, body: content }
+  }
 
-  return { meta, body: frontmatterMatch[2].trim() }
+  const frontmatter = allLines.slice(1, closeIndex).join('\n')
+  const body = allLines.slice(closeIndex + 1).join('\n').trim()
+  const meta = {}
+  const lines = frontmatter.split('\n')
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i]
+    const match = line.match(/^([A-Za-z0-9_-]+):\s*(.*)$/)
+    if (!match) continue
+
+    const key = match[1].trim()
+    const rawValue = match[2].trim()
+
+    if (rawValue === '>' || rawValue === '|') {
+      const block = []
+      while (i + 1 < lines.length && (/^\s+/.test(lines[i + 1]) || lines[i + 1].trim() === '')) {
+        i++
+        block.push(lines[i].trim())
+      }
+      meta[key] = rawValue === '>'
+        ? block.filter(Boolean).join(' ')
+        : block.join('\n').trim()
+      continue
+    }
+
+    meta[key] = rawValue
+  }
+
+  return { meta, body }
 }
 
 // ─────────────────────────────────────────────
@@ -282,11 +311,11 @@ function generateWindsurfRules(skills) {
 }
 
 // ─────────────────────────────────────────────
-// 生成 Claude Code CLAUDE.md
+// 生成 Claude Code CLAUDE.md / AGENTS.md
 // ─────────────────────────────────────────────
-function generateClaudeCode(skills) {
+function buildAgentRules(skills, fileName) {
   const lines = [
-    `# CLAUDE.md — Skills 规则`,
+    `# ${fileName} — Skills 规则`,
     ``,
     `> 自动生成于 ${new Date().toISOString()}`,
     `> 共 ${skills.length} 个 skills`,
@@ -334,9 +363,17 @@ function generateClaudeCode(skills) {
     lines.push(``)
   }
 
+  return lines.join('\n')
+}
+
+function generateClaudeCode(skills) {
   const outPath = path.join(OUTPUT_DIR, 'CLAUDE.md')
-  writeFile(outPath, lines.join('\n'))
+  writeFile(outPath, buildAgentRules(skills, 'CLAUDE.md'))
   log(`  ✅ Claude Code → CLAUDE.md`)
+
+  const agentsPath = path.join(OUTPUT_DIR, 'AGENTS.md')
+  writeFile(agentsPath, buildAgentRules(skills, 'AGENTS.md'))
+  log(`  ✅ Codex      → AGENTS.md`)
 }
 
 // ─────────────────────────────────────────────
@@ -384,6 +421,7 @@ function cmdClean() {
     path.join(OUTPUT_DIR, '.cursor', 'rules'),
     path.join(OUTPUT_DIR, '.windsurfrules'),
     path.join(OUTPUT_DIR, 'CLAUDE.md'),
+    path.join(OUTPUT_DIR, 'AGENTS.md'),
   ]
 
   log(`\n🧹 清理生成的规则文件...\n`)

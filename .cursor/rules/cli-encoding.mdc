@@ -1,0 +1,93 @@
+---
+description: 处理文件编码安全问题的约束指南。当涉及任何文件读写操作（尤其是在 PowerShell / Windows 环境下操作 JS、Vue、MD、JSON、配置文件等源码文件）时，必须使用此 skill。触发关键词：编码、BOM、UTF-8、PowerShell 读写文件、Set-Content、Get-Content、文件乱码、文件头字节、脚本写回文件。
+
+alwaysApply: false
+---
+
+# UTF-8 编码约束
+
+## 核心原则
+
+仓库中所有源码和文档默认使用 **UTF-8 无 BOM** 编码。任何文件读写操作都必须显式指定编码，绝不依赖系统默认编码。
+
+---
+
+## 读文件
+
+在 PowerShell 中读取源码、文档、配置文件时，**必须显式指定 `-Encoding utf8`**：
+
+```powershell
+# ✅ 正确
+Get-Content -LiteralPath 'docs\frd\wode-design.md' -TotalCount 140 -Encoding utf8
+
+# ❌ 错误：依赖 PowerShell 默认编码，可能导致乱码
+Get-Content -LiteralPath 'docs\frd\wode-design.md' -TotalCount 140
+```
+
+---
+
+## 写文件
+
+**禁止**对 JS、Vue、MD 等源码文件使用 PowerShell 5.x 的 `Set-Content -Encoding utf8`，因为它会写入 BOM（`EF BB BF`）。
+
+```powershell
+# ❌ 绝对禁止：PowerShell 5.x 的 utf8 会写入 BOM
+Set-Content -Path 'mock/data/activity.js' -Encoding utf8 -Value $content
+```
+
+如果必须通过脚本写回文件，统一使用 .NET 的 `System.Text.UTF8Encoding($false)`：
+
+```powershell
+# ✅ 正确：UTF-8 无 BOM
+$utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+[System.IO.File]::WriteAllText(
+    (Resolve-Path 'mock/data/activity.js'),
+    $content,
+    $utf8NoBom
+)
+```
+
+---
+
+## 检查文件编码
+
+怀疑文件编码异常时，先检查文件头字节：
+
+```powershell
+# 读取前 4 个字节
+$bytes = [System.IO.File]::ReadAllBytes('mock/data/activity.js') | Select-Object -First 4
+$bytes | ForEach-Object { $_.ToString('X2') }
+```
+
+判断规则：
+- 开头是 `EF BB BF` → 文件带有 BOM，需要处理
+- 开头无 `EF BB BF` → 正常的 UTF-8 无 BOM
+
+修复带 BOM 文件：
+
+```powershell
+$utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+$content = Get-Content -LiteralPath 'mock/data/activity.js' -Encoding utf8 -Raw
+[System.IO.File]::WriteAllText(
+    (Resolve-Path 'mock/data/activity.js'),
+    $content,
+    $utf8NoBom
+)
+```
+
+---
+
+## 已知问题记录
+
+`mock/data/activity.js` 曾被 PowerShell 误写成 `UTF-8 with BOM`，后续编辑该文件时需格外注意。
+
+---
+
+## 快速检查清单
+
+在任何文件写操作前，确认以下几点：
+
+- [ ] 是否使用了 `Set-Content -Encoding utf8`？→ 改用 `System.Text.UTF8Encoding($false)`
+- [ ] 是否显式指定了读取编码？→ 加上 `-Encoding utf8`
+- [ ] 写回后是否需要验证文件头？→ 检查首字节不为 `EF BB BF`
+

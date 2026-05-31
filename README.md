@@ -1,25 +1,21 @@
 # Skills Documentation
 
-A comprehensive collection of specialized skills for creating, manipulating, and testing various document formats, designing interfaces, and building advanced applications.
+A curated collection of agent skills for documents, design, frontend development, application engineering, writing, and workflow automation.
 
-## Overview
+This repository currently contains **23 skills**. Each skill lives in its own directory under `skills/` and includes a `SKILL.md` file with trigger rules, workflow guidance, and implementation details.
 
-This repository contains documentation and resources for 16 different skills organized by purpose. Each skill includes detailed guides, code examples, and best practices for specific tasks.
+## Install A Single Skill
 
----
-
-## 安装单个 Skill
-
-无需克隆整个仓库，用以下命令单独下载某个 skill：
+You do not need to clone the whole repository. Download one skill directly:
 
 ```bash
-# 将 skill-name 替换为你想要的 skill 目录名，例如 frontend-design
+# Replace skill-name with the directory name, for example frontend-design
 mkdir -p ~/.claude/skills/skill-name
 curl -o ~/.claude/skills/skill-name/SKILL.md \
   https://raw.githubusercontent.com/docs-5102-org/skills-docs/main/skills/skill-name/SKILL.md
 ```
 
-例如，安装 `frontend-design`：
+Example:
 
 ```bash
 mkdir -p ~/.claude/skills/frontend-design
@@ -27,221 +23,100 @@ curl -o ~/.claude/skills/frontend-design/SKILL.md \
   https://raw.githubusercontent.com/docs-5102-org/skills-docs/main/skills/frontend-design/SKILL.md
 ```
 
-下载完成后重启 Claude Code 会话即可自动识别。如果该 skill 包含 `scripts/` 或 `references/` 子目录，需要对其中的文件逐一单独下载。
+Restart your Claude Code session after installation. If a skill includes `scripts/`, `templates/`, or `references/`, download those supporting files as needed.
 
----
+## Skill Catalog
 
-## 🎨 Creative & Design Skills
+| # | Skill | Directory | Category | Best For | Primary Output |
+|---|---|---|---|---|---|
+| 1 | Algorithmic Art | [`algorithmic-art`](skills/algorithmic-art/SKILL.md) | Creative & Design | Generative art, flow fields, particle systems, p5.js experiments | `.md`, `.html`, `.js` |
+| 2 | Ant Design | [`antd`](skills/antd/SKILL.md) | Development | React enterprise UI, admin pages, antd components and theming | React components |
+| 3 | Brand Guidelines | [`brand-guidelines`](skills/brand-guidelines/SKILL.md) | Creative & Design | Anthropic-style colors, typography, and visual formatting | Styled artifacts |
+| 4 | Canvas Design | [`canvas-design`](skills/canvas-design/SKILL.md) | Creative & Design | Static visual art, posters, design-forward PNG/PDF work | `.png`, `.pdf`, `.md` |
+| 5 | UTF-8 Encoding | [`cli-encoding`](skills/cli-encoding/SKILL.md) | Tooling | Safe file reads/writes, especially on PowerShell and Windows | Encoding rules |
+| 6 | Doc Coauthoring | [`doc-coauthoring`](skills/doc-coauthoring/SKILL.md) | Writing | Collaborative specs, PRDs, proposals, decision docs | Structured documents |
+| 7 | DOCX Documents | [`docx`](skills/docx/SKILL.md) | Documents | Word document creation, editing, formatting, comments, tracked changes | `.docx` |
+| 8 | Frontend Design | [`frontend-design`](skills/frontend-design/SKILL.md) | Creative & Design | Distinctive websites, dashboards, components, UI systems | HTML/CSS/React |
+| 9 | Internal Communications | [`internal-comms`](skills/internal-comms/SKILL.md) | Writing | Status reports, 3P updates, newsletters, FAQs, incident reports | Business documents |
+| 10 | Java Interviewer | [`java-interviewer`](skills/java-interviewer/SKILL.md) | Education | Java senior engineer or architect interview practice | Interview questions and feedback |
+| 11 | MCP Server Builder | [`mcp-builder`](skills/mcp-builder/SKILL.md) | Development | Model Context Protocol servers and LLM tool integrations | MCP servers |
+| 12 | PDF Processing | [`pdf`](skills/pdf/SKILL.md) | Documents | PDF extraction, merge/split, forms, watermarking, encryption, OCR | `.pdf` |
+| 13 | PowerShell | [`powershell`](skills/powershell/SKILL.md) | Development | PowerShell scripts, Windows automation, cmdlet review and fixes | `.ps1` |
+| 14 | PowerPoint | [`pptx`](skills/pptx/SKILL.md) | Documents | Presentations, slide decks, templates, speaker notes | `.pptx` |
+| 15 | FastAPI | [`python-fastapi`](skills/python-fastapi/SKILL.md) | Development | API routes, SQLModel models, CRUD, tests, HTML templates | Python services |
+| 16 | Quotation DOCX | [`quotation-docx`](skills/quotation-docx/SKILL.md) | Documents | Chinese project quotations with modules, totals, payment terms, milestones | `.docx` |
+| 17 | Skill Creator | [`skill-creator`](skills/skill-creator/SKILL.md) | Tooling | Creating, evaluating, and improving skills | Skill definitions |
+| 18 | Slack GIF Creator | [`slack-gif-creator`](skills/slack-gif-creator/SKILL.md) | Creative & Design | Slack emoji and message GIFs with size and timing constraints | `.gif` |
+| 19 | Tech Review Writer | [`tech-review-writer`](skills/tech-review-writer/SKILL.md) | Writing | Long-form Chinese reviews of open-source AI tools and projects | Articles |
+| 20 | Theme Factory | [`theme-factory`](skills/theme-factory/SKILL.md) | Creative & Design | Applying curated professional themes to artifacts | Themed artifacts |
+| 21 | Web Artifacts Builder | [`web-artifacts-builder`](skills/web-artifacts-builder/SKILL.md) | Development | Multi-component HTML artifacts with React, TypeScript, Vite, Tailwind | Bundled `.html` |
+| 22 | Web Application Testing | [`webapp-testing`](skills/webapp-testing/SKILL.md) | Development | Playwright testing, screenshots, browser logs, local app verification | Test reports |
+| 23 | Excel Spreadsheets | [`xlsx`](skills/xlsx/SKILL.md) | Documents | Spreadsheets, data cleaning, formulas, financial models, formatting | `.xlsx`, `.csv`, `.tsv` |
 
-### [Algorithmic Art](skills/algorithmic-art/SKILL.md)
-Create generative art using computational aesthetics and p5.js with seeded randomness and interactive parameter exploration. Perfect for algorithmic art, flow fields, particle systems, and interactive visualizations.
+## Quick Lookup
 
-**Output**: `.md` (philosophy) + `.html` + `.js` (p5.js implementations)
+| Need | Use These Skills |
+|---|---|
+| Create or edit office documents | `docx`, `pdf`, `pptx`, `xlsx`, `quotation-docx` |
+| Design visual or interactive artifacts | `algorithmic-art`, `canvas-design`, `frontend-design`, `brand-guidelines`, `theme-factory`, `slack-gif-creator` |
+| Build apps, APIs, or integrations | `python-fastapi`, `antd`, `web-artifacts-builder`, `mcp-builder`, `powershell` |
+| Test web applications | `webapp-testing` |
+| Write professional content | `internal-comms`, `doc-coauthoring`, `tech-review-writer` |
+| Create or maintain skills | `skill-creator`, `cli-encoding` |
+| Practice technical interviews | `java-interviewer` |
 
-### [Canvas Design](skills/canvas-design/SKILL.md)
-Create beautiful visual designs and artwork in `.png` and `.pdf` formats. Develop design philosophies and aesthetic movements, then express them visually through original artwork.
+## Directory Summary
 
-**Output**: `.md` (philosophy) + `.pdf`/`.png` (designs)
+| Directory | Skill |
+|---|---|
+| `skills/algorithmic-art/` | Algorithmic Art |
+| `skills/antd/` | Ant Design |
+| `skills/brand-guidelines/` | Brand Guidelines |
+| `skills/canvas-design/` | Canvas Design |
+| `skills/cli-encoding/` | UTF-8 Encoding |
+| `skills/doc-coauthoring/` | Doc Coauthoring |
+| `skills/docx/` | DOCX Documents |
+| `skills/frontend-design/` | Frontend Design |
+| `skills/internal-comms/` | Internal Communications |
+| `skills/java-interviewer/` | Java Interviewer |
+| `skills/mcp-builder/` | MCP Server Builder |
+| `skills/pdf/` | PDF Processing |
+| `skills/powershell/` | PowerShell |
+| `skills/pptx/` | PowerPoint |
+| `skills/python-fastapi/` | FastAPI |
+| `skills/quotation-docx/` | Quotation DOCX |
+| `skills/skill-creator/` | Skill Creator |
+| `skills/slack-gif-creator/` | Slack GIF Creator |
+| `skills/tech-review-writer/` | Tech Review Writer |
+| `skills/theme-factory/` | Theme Factory |
+| `skills/web-artifacts-builder/` | Web Artifacts Builder |
+| `skills/webapp-testing/` | Web Application Testing |
+| `skills/xlsx/` | Excel Spreadsheets |
 
-### [Frontend Design](skills/frontend-design/SKILL.md)
-Build distinctive, production-grade frontend interfaces and web components with exceptional design quality. Create websites, landing pages, dashboards, and React components that avoid generic AI aesthetics.
+## Repository Notes
 
-**Output**: HTML/CSS/React components
-
-### [Brand Guidelines](skills/brand-guidelines/SKILL.md)
-Apply Anthropic's official brand identity to any artifact. Includes brand colors, typography, visual formatting standards, and corporate design resources.
-
-**Output**: Styled components using brand specifications
-
-### [Theme Factory](skills/theme-factory/SKILL.md)
-Access 10 pre-set professional themes with curated color palettes and font pairings. Apply consistent, professional styling to presentations, slides, documents, and landing pages.
-
-**Output**: Themed artifacts with cohesive visual identity
-
----
-
-## 📄 Document Processing Skills
-
-### [DOCX Documents](skills/docx/SKILL.md)
-Create, read, edit, and manipulate Word documents (`.docx`). Handle formatting, tables of contents, tracked changes, comments, images, and convert legacy `.doc` files.
-
-**Capabilities**: 
-- Reading/analyzing content
-- Creating new documents
-- Editing existing documents
-- Find-and-replace operations
-- Working with templates and formatting
-
-### [PDF Processing](skills/pdf/SKILL.md)
-Comprehensive PDF handling: read/extract text and tables, merge/split PDFs, fill forms, add watermarks, encrypt/decrypt, extract images, and perform OCR on scanned PDFs.
-
-**Capabilities**:
-- Text and table extraction
-- Merging and splitting
-- Form filling
-- Watermarking and encryption
-- Image extraction
-- OCR capabilities
-
-### [PowerPoint (PPTX)](skills/pptx/SKILL.md)
-Create, read, edit, and manage PowerPoint presentations. Handle slide decks, templates, layouts, speaker notes, and comments. Extract content or create presentations from scratch.
-
-**Capabilities**:
-- Creating presentations
-- Reading/extracting content
-- Editing and modifying
-- Working with templates
-- Managing speaker notes and comments
-
-### [Excel (XLSX)](skills/xlsx/SKILL.md)
-Open, create, read, edit, and fix spreadsheets. Handle `.xlsx`, `.xlsm`, `.csv`, and `.tsv` files. Create financial models, clean messy data, add formulas, and apply professional formatting.
-
-**Capabilities**:
-- Creating and editing spreadsheets
-- Data cleaning and restructuring
-- Financial modeling
-- Formulas and calculations
-- Professional formatting
-
----
-
-## 🛠️ Development & Technical Skills
-
-### [Web Artifacts Builder](skills/web-artifacts-builder/SKILL.md)
-Build elaborate, multi-component HTML artifacts using modern frontend technologies: React 18, TypeScript, Vite, Tailwind CSS, and shadcn/ui components.
-
-**Stack**: React 18 + TypeScript + Vite + Tailwind CSS + shadcn/ui
-
-**Output**: Single bundled HTML file
-
-### [MCP Server Builder](skills/mcp-builder/SKILL.md)
-Create high-quality Model Context Protocol (MCP) servers that enable LLMs to interact with external services. Build in Python (FastMCP) or Node/TypeScript (MCP SDK).
-
-**Process**:
-1. Design tool specifications
-2. Implement tools
-3. Test and evaluate
-4. Document and deploy
-
-### [Skill Creator](skills/skill-creator/SKILL.md)
-Create new skills from scratch, modify and improve existing skills, and measure skill performance. Run evaluations, benchmark performance with variance analysis, and optimize skill descriptions for better triggering.
-
-**Process**:
-- Draft skill specification
-- Create test prompts
-- Run evaluations
-- Analyze results quantitatively
-- Iterate and refine
-- Expand test sets
-
-### [Web Application Testing](skills/webapp-testing/SKILL.md)
-Test local web applications using Playwright. Verify frontend functionality, debug UI behavior, capture screenshots, and view browser logs with Python scripts.
-
-**Tools**: Playwright + Python scripts
-
----
-
-## 🎬 Content & Animation Skills
-
-### [Slack GIF Creator](skills/slack-gif-creator/SKILL.md)
-Create optimized animated GIFs for Slack. Provides constraints, validation tools, and animation concepts.
-
-**Specifications**:
-- **Emoji GIFs**: 128×128, under 3 seconds
-- **Message GIFs**: 480×480
-- **FPS**: 10-30 (lower = smaller file)
-- **Colors**: 48-128 (fewer = smaller file)
-
----
-
-## 📋 Communication Skills
-
-### [Internal Communications](skills/internal-comms/SKILL.md)
-Write professional internal communications including status reports, 3P updates (Progress, Plans, Problems), company newsletters, FAQs, and incident reports. Uses company-standard formats and templates.
-
-**Document Types**:
-- Status reports
-- Leadership updates
-- 3P updates
-- Newsletters
-- FAQ responses
-- Incident reports
-
-### [Doc Coauthoring](skills/doc-coauthoring/SKILL.md)
-Collaborative document creation and management tools for team-based documentation projects.
-
----
-
-## 📊 Quick Reference
-
-| Skill | Primary Output | Best For |
-|-------|---|---|
-| Algorithmic Art | `.js`, `.html`, `.md` | Generative art, visualizations |
-| Canvas Design | `.pdf`, `.png`, `.md` | Static visual designs |
-| Frontend Design | HTML/React/CSS | Web interfaces, components |
-| Brand Guidelines | Styled artifacts | Brand consistency |
-| Theme Factory | Themed artifacts | Professional styling |
-| DOCX | `.docx` | Word documents |
-| PDF | `.pdf` | PDF manipulation |
-| PPTX | `.pptx` | Presentations |
-| XLSX | `.xlsx` | Spreadsheets |
-| Web Artifacts | `.html` | Complex web artifacts |
-| MCP Builder | MCP Server | LLM integrations |
-| Skill Creator | Skills | Creating/improving skills |
-| Web Testing | Test reports | Frontend testing |
-| Slack GIF | `.gif` | Slack animations |
-| Internal Comms | Documents | Business communication |
-
----
-
-## Getting Started
-
-1. **Choose a skill** based on your task
-2. **Read the SKILL.md file** in the skill's directory for detailed instructions
-3. **Follow the provided templates and examples**
-4. **Check referenced guides** for advanced topics (e.g., `reference.md`, `editing.md`)
-5. **Use provided scripts** in the `scripts/` directories
-
----
-
-## Directory Structure
-
-```
-skills/
-├── algorithmic-art/         # Generative art with p5.js
-├── brand-guidelines/        # Anthropic brand styling
-├── canvas-design/           # Visual design philosophy
-├── doc-coauthoring/         # Collaborative documentation
-├── docx/                    # Word document handling
-├── frontend-design/         # Web UI design
-├── internal-comms/          # Business communications
-├── mcp-builder/             # MCP server development
-├── pdf/                     # PDF processing
-├── pptx/                    # PowerPoint presentations
-├── skill-creator/           # Create and improve skills
-├── slack-gif-creator/       # Slack GIF creation
-├── theme-factory/           # Theme and styling
-├── web-artifacts-builder/   # Complex web artifacts
-├── webapp-testing/          # Web application testing
-└── xlsx/                    # Excel spreadsheet handling
-```
-
----
-
-## Notes
-
-- Each skill directory contains a `SKILL.md` file with comprehensive documentation
-- Most skills include `scripts/` directories with helper tools and utilities
-- License information is in each skill's `LICENSE.txt` file
-- Some skills include `reference.md` files with advanced topics and examples
-
----
+| File Or Directory | Purpose |
+|---|---|
+| `SKILL.md` | Main skill instructions, trigger rules, and workflow guidance |
+| `LICENSE.txt` | License terms for a skill, when provided |
+| `scripts/` | Helper scripts and validation utilities |
+| `templates/` | Reusable templates for generated artifacts |
+| `references/` or `reference.md` | Supporting reference material and deeper examples |
 
 ## Contributing
 
-When adding new skills or updating documentation:
-1. Follow the existing directory structure
-2. Include a complete `SKILL.md` with description and usage guidelines
-3. Add a `LICENSE.txt` file
-4. Include scripts and examples in appropriate subdirectories
-5. Update this README with the new skill information
+| Step | Requirement |
+|---|---|
+| 1 | Create a new directory under `skills/` using a stable kebab-case name |
+| 2 | Add a complete `SKILL.md` with frontmatter, description, trigger guidance, and workflow rules |
+| 3 | Include `LICENSE.txt` when the skill has specific license terms |
+| 4 | Place supporting scripts, templates, or references in clear subdirectories |
+| 5 | Update the skill tables in both `README.md` and `README.zh.md` |
+
+## Related
+
+| Resource | Link |
+|---|---|
+| Chinese README | [README.zh.md](README.zh.md) |
+| Usage examples | [use.md](use.md) |
+| Repository | [docs-5102-org/skills-docs](https://github.com/docs-5102-org/skills-docs) |

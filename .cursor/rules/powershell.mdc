@@ -1,0 +1,386 @@
+---
+description: Use this skill whenever the user asks to write, review, fix, or explain PowerShell scripts. Triggers include: any mention of "PowerShell", ".ps1" files, PowerShell cmdlets (Get-Item, Set-Location, etc.), Windows automation tasks, batch file operations, system administration scripts, or cross-platform scripting with PowerShell Core. Also triggers when the user asks to move, copy, rename, delete files/directories using PowerShell, or asks about execution policy, error handling, or PowerShell modules.
+
+alwaysApply: false
+---
+
+# PowerShell 开发规范与最佳实践
+
+## 概述
+
+本规范适用于所有 PowerShell 脚本开发，涵盖命名规范、代码格式、安全性、错误处理及跨平台兼容性。生成的脚本必须严格遵守以下规则。
+
+---
+
+## 命名规范
+
+### 变量命名 — PascalCase 或 camelCase
+
+```powershell
+# ✅ 推荐
+$FileName = "document.txt"
+$userCount = 42
+
+# ❌ 不推荐
+$fn = "document.txt"
+$u_c = 42
+```
+
+### 函数命名 — 动词-名词 + PascalCase
+
+```powershell
+# ✅ 推荐
+function Get-UserData { ... }
+function Convert-XmlToJson { ... }
+
+# ❌ 不推荐
+function userData { ... }
+function xmljson { ... }
+```
+
+### 参数命名 — PascalCase + 提供默认值
+
+```powershell
+function Send-Email {
+    param(
+        [string]$Recipient,
+        [string]$Subject = "No Subject",
+        [string]$Body = ""
+    )
+}
+```
+
+---
+
+## 代码格式规范
+
+### 缩进与空格
+- 使用 **4个空格** 缩进，禁止使用 Tab
+- 运算符两侧添加空格
+- 逗号、分号后添加空格
+
+### 大括号风格 — 同行开始，单独行结束
+
+```powershell
+if ($condition) {
+    # 代码
+}
+else {
+    # 代码
+}
+```
+
+### 注释规范
+
+```powershell
+# 单行注释：解释"为什么"，而不只是"是什么"
+$activityScore = ($loginCount * 0.7) + ($postCount * 0.3)
+
+# 函数注释块（必须提供）
+<#
+.SYNOPSIS
+    处理用户数据并生成报告
+.DESCRIPTION
+    读取用户数据，计算统计信息，生成 HTML 报告
+.PARAMETER Path
+    用户数据文件的路径
+.EXAMPLE
+    Process-UserData -Path "C:\data\users.csv"
+#>
+function Process-UserData {
+    param([string]$Path)
+}
+```
+
+---
+
+## 错误处理
+
+### 标准模式：try-catch + ErrorAction Stop
+
+```powershell
+try {
+    $content = Get-Content -Path $filePath -ErrorAction Stop
+}
+catch {
+    Write-Error "无法读取文件: $_"
+}
+```
+
+### 忽略非关键错误
+
+```powershell
+# 忽略单个命令的错误
+Move-Item -Path $source -Destination $dest -ErrorAction SilentlyContinue
+
+# 在循环中忽略错误
+Get-ChildItem -Path "C:\source" | ForEach-Object {
+    Move-Item -Path $_.FullName -Destination "D:\dest\" -ErrorAction SilentlyContinue
+}
+```
+
+---
+
+## 路径处理
+
+### 必须使用 Join-Path，禁止字符串拼接
+
+```powershell
+# ✅ 正确
+$configPath = Join-Path -Path $PSScriptRoot -ChildPath "config.json"
+
+# ❌ 错误
+$configPath = "$PSScriptRoot\config.json"
+```
+
+### 操作前验证路径存在
+
+```powershell
+if (Test-Path -Path $configPath) {
+    $config = Get-Content -Path $configPath | ConvertFrom-Json
+}
+```
+
+### 中文路径与特殊字符处理
+
+```powershell
+# 设置 UTF-8 编码（处理中文路径必须）
+$OutputEncoding = [System.Text.Encoding]::UTF8
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+
+# 使用 -LiteralPath 处理包含 [ ] 等特殊字符的路径
+Get-ChildItem -LiteralPath "C:\路径\包含[括号]的文件夹"
+
+# 包含空格的路径使用双引号
+Move-Item -Path "C:\path with spaces\file.txt" -Destination "D:\another path\file.txt"
+```
+
+---
+
+## 安全性规范
+
+### 凭据处理 — 禁止硬编码密码
+
+```powershell
+# ❌ 不安全
+$password = "P@ssw0rd"
+
+# ✅ 安全
+$credential = Get-Credential
+$securePassword = Read-Host -AsSecureString -Prompt "请输入密码"
+```
+
+### 参数验证 — 防止注入与非法输入
+
+```powershell
+function Process-Data {
+    param(
+        [Parameter(Mandatory=$true)]
+        [ValidateNotNullOrEmpty()]
+        [string]$InputPath,
+
+        [ValidateRange(1, 100)]
+        [int]$Count = 10
+    )
+}
+```
+
+### 执行策略
+
+```powershell
+# 查看当前策略
+Get-ExecutionPolicy
+
+# 为当前用户设置（推荐）
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+# 临时绕过执行脚本
+powershell -ExecutionPolicy Bypass -File .\script.ps1
+```
+
+---
+
+## 文件与目录操作
+
+### 查看目录内容
+
+```powershell
+Get-ChildItem                                          # 当前目录
+Get-ChildItem -Path "C:\target" -Force                 # 包含隐藏文件
+Get-ChildItem -Path "C:\target" -Recurse               # 递归
+Get-ChildItem -Path "C:\target" -Filter "*.md"         # 按类型筛选
+```
+
+### 创建目录
+
+```powershell
+New-Item -Path "C:\new\directory" -ItemType Directory -Force
+```
+
+### 复制
+
+```powershell
+Copy-Item -Path "C:\src\file.txt" -Destination "C:\dst\file.txt" -Force
+Copy-Item -Path "C:\src\dir"     -Destination "C:\dst\dir"      -Recurse
+```
+
+### 移动
+
+```powershell
+Move-Item -Path "C:\src\file.txt" -Destination "C:\dst\file.txt" -Force
+Move-Item -Path "C:\src\*.txt"    -Destination "C:\dst\"
+Move-Item -Path "C:\src\*"        -Destination "C:\dst\"
+```
+
+### 删除
+
+```powershell
+Remove-Item -Path "C:\file.txt"              # 文件
+Remove-Item -Path "C:\dir" -Recurse          # 目录
+Remove-Item -Path "C:\file.txt" -Force       # 强制（不提示）
+```
+
+### 重命名
+
+```powershell
+Rename-Item -Path "C:\old.txt" -NewName "new.txt"
+```
+
+### 批量操作 — 管道 + Where-Object 过滤
+
+```powershell
+# 移动所有 .md 文件
+Get-ChildItem -Path "C:\source" -Filter "*.md" | ForEach-Object {
+    Move-Item -Path $_.FullName -Destination "D:\destination\" -Force
+}
+
+# 按文件名关键字过滤
+Get-ChildItem -Path "C:\source" |
+    Where-Object { $_.Name -like "*关键字*" } |
+    ForEach-Object {
+        Move-Item -Path $_.FullName -Destination "D:\destination\" -Force
+    }
+```
+
+### 批量操作前先 -WhatIf 预览
+
+```powershell
+# 先预览
+Remove-Item -Path "C:\temp\*.log" -WhatIf
+
+# 确认无误后执行
+Remove-Item -Path "C:\temp\*.log" -Confirm:$false
+```
+
+---
+
+## 性能规范
+
+```powershell
+# ❌ 低效：循环中 Write-Host
+foreach ($item in $largeCollection) {
+    Write-Host $item
+}
+
+# ✅ 高效：预分配集合 + Write-Output
+$results = [System.Collections.ArrayList]::new($largeCollection.Count)
+foreach ($item in $largeCollection) {
+    $null = $results.Add($item)
+}
+Write-Output $results
+```
+
+---
+
+## 模块化原则
+
+- 每个函数 **单一职责**
+- 使用参数传递数据，不使用全局变量
+- 常用逻辑封装为独立函数
+
+```powershell
+function Get-ConfigValue {
+    param([string]$Key)
+    # 实现
+}
+
+function Set-ConfigValue {
+    param([string]$Key, [string]$Value)
+    # 实现
+}
+```
+
+---
+
+## 跨平台兼容性（PowerShell Core 6+）
+
+### 路径分隔符 — 使用 Join-Path
+
+```powershell
+# ❌ Windows 特有
+$path = "$env:USERPROFILE\Documents\file.txt"
+
+# ✅ 跨平台
+$path = Join-Path -Path $env:USERPROFILE -ChildPath "Documents" -AdditionalChildPath "file.txt"
+```
+
+### 操作系统检测
+
+```powershell
+if ($IsWindows) {
+    # Windows 特有代码
+}
+elseif ($IsLinux) {
+    # Linux 特有代码
+}
+elseif ($IsMacOS) {
+    # macOS 特有代码
+}
+```
+
+---
+
+## 测试规范（Pester）
+
+```powershell
+Describe "配置管理功能" {
+    It "应正确读取配置值" {
+        $result = Get-ConfigValue -Key "AppName"
+        $result | Should -Be "MyApp"
+    }
+}
+```
+
+---
+
+## 脚本版本信息模板
+
+```powershell
+<#
+.SYNOPSIS
+    脚本功能简述
+.DESCRIPTION
+    版本: 1.0.0
+    作者: 作者名
+    更新日期: 2025-01-01
+    更改历史:
+    - 1.0.0: 初始版本
+#>
+```
+
+---
+
+## 快速检查清单
+
+生成或审查脚本时，必须确认以下各项：
+
+- [ ] 变量和函数命名遵循 PascalCase / 动词-名词格式
+- [ ] 使用 `Join-Path` 构建路径，不拼接字符串
+- [ ] 关键操作使用 `try-catch` + `-ErrorAction Stop`
+- [ ] 无硬编码密码或敏感信息
+- [ ] 参数使用 `[ValidateNotNullOrEmpty()]` 等验证属性
+- [ ] 中文路径已设置 UTF-8 编码
+- [ ] 批量删除/移动操作前使用 `-WhatIf` 预览
+- [ ] 函数提供 `.SYNOPSIS` / `.DESCRIPTION` 注释块
+- [ ] 跨平台代码使用 `$IsWindows` / `$IsLinux` 检测
+

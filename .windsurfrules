@@ -1,17 +1,11 @@
 # Skills Rules for Windsurf
-# 自动生成于 2026-03-02T03:47:44.547Z
-# 共 16 个 skills
+# 自动生成于 2026-05-31T03:22:35.864Z
+# 共 23 个 skills
 
 ============================================================
 ## Skill: algorithmic-art
-## 触发场景: 
+## 触发场景: Creating algorithmic art using p5.js with seeded randomness and interactive parameter exploration. U
 ============================================================
-
----
-name: algorithmic-art
-description: Creating algorithmic art using p5.js with seeded randomness and interactive parameter exploration. Use this when users request creating art using code, generative art, algorithmic art, flow fields, or particle systems. Create original algorithmic art rather than copying existing artists' work to avoid copyright violations.
-license: Complete terms in LICENSE.txt
----
 
 Algorithmic philosophies are computational aesthetic movements that are then expressed through code. Output .md files (philosophy), .html files (interactive viewer), and .js files (generative algorithms).
 
@@ -414,15 +408,1178 @@ This skill includes helpful templates and documentation:
 - But DO keep the exact UI structure and Anthropic branding from the template
 
 ============================================================
-## Skill: brand-guidelines
-## 触发场景: 
+## Skill: antd
+## 触发场景: Use this skill whenever the user asks to build UI components, pages, or features using Ant Design (a
 ============================================================
 
+# Ant Design (antd) Development Guide
+
+## Overview
+
+Ant Design is an enterprise-class React UI library by Ant Group. Current stable version is **v5.x**, which uses CSS-in-JS by default and introduces Design Tokens for theming.
+
+> **Always refer to the official docs for component details:**
+> - Component overview + links → https://ant.design/llms.txt
+> - Full component docs with API + examples → https://ant.design/llms-full.txt
+
 ---
-name: brand-guidelines
-description: Applies Anthropic's official brand colors and typography to any sort of artifact that may benefit from having Anthropic's look-and-feel. Use it when brand colors or style guidelines, visual formatting, or company design standards apply.
-license: Complete terms in LICENSE.txt
+
+## Quick Start
+
+```bash
+npm install antd
+# or
+pnpm add antd
+```
+
+```tsx
+import { Button, ConfigProvider } from 'antd';
+
+const App = () => (
+  <ConfigProvider theme={{ token: { colorPrimary: '#1677ff' } }}>
+    <Button type="primary">Hello Ant Design</Button>
+  </ConfigProvider>
+);
+```
+
 ---
+
+## Core Principles
+
+### 1. Always Use ConfigProvider at the Root
+
+Wrap your entire app with `ConfigProvider` to:
+- Set global theme tokens
+- Configure locale (i18n)
+- Set global component default props
+
+```tsx
+import { ConfigProvider } from 'antd';
+import zhCN from 'antd/locale/zh_CN';
+
+<ConfigProvider
+  locale={zhCN}
+  theme={{
+    token: {
+      colorPrimary: '#1677ff',
+      borderRadius: 6,
+    },
+    components: {
+      Button: { borderRadius: 4 },
+    },
+  }}
+>
+  <App />
+</ConfigProvider>
+```
+
+### 2. Import Only What You Need (Tree Shaking)
+
+antd v5 supports tree shaking by default. No need for babel-plugin-import.
+
+```tsx
+// ✅ Correct - tree shaking works
+import { Button, Table, Form } from 'antd';
+
+// ❌ Avoid - imports entire library
+import antd from 'antd';
+```
+
+### 3. Use Design Tokens, Not Hardcoded Colors
+
+```tsx
+import { theme } from 'antd';
+
+const MyComponent = () => {
+  const { token } = theme.useToken();
+  return (
+    <div style={{ color: token.colorPrimary, padding: token.paddingMD }}>
+      Themed content
+    </div>
+  );
+};
+```
+
+---
+
+## Component Usage Patterns
+
+### Form (Most Complex Component)
+
+```tsx
+import { Form, Input, Button, Select } from 'antd';
+
+const MyForm = () => {
+  const [form] = Form.useForm();
+
+  const onFinish = (values: any) => {
+    console.log('Form values:', values);
+  };
+
+  return (
+    <Form
+      form={form}
+      layout="vertical"           // 'horizontal' | 'vertical' | 'inline'
+      initialValues={{ remember: true }}
+      onFinish={onFinish}
+      onFinishFailed={(errorInfo) => console.log('Failed:', errorInfo)}
+    >
+      <Form.Item
+        label="Username"
+        name="username"
+        rules={[
+          { required: true, message: 'Please input your username!' },
+          { min: 3, message: 'At least 3 characters' },
+        ]}
+      >
+        <Input />
+      </Form.Item>
+
+      <Form.Item
+        label="Role"
+        name="role"
+        rules={[{ required: true }]}
+      >
+        <Select options={[
+          { label: 'Admin', value: 'admin' },
+          { label: 'User', value: 'user' },
+        ]} />
+      </Form.Item>
+
+      <Form.Item>
+        <Button type="primary" htmlType="submit">Submit</Button>
+        <Button onClick={() => form.resetFields()} style={{ marginLeft: 8 }}>Reset</Button>
+      </Form.Item>
+    </Form>
+  );
+};
+```
+
+**Form Tips:**
+- Use `Form.useForm()` for programmatic control
+- `form.setFieldsValue()` to set values externally
+- `form.validateFields()` returns a Promise
+- `Form.List` for dynamic fields
+
+### Table (Data Display)
+
+```tsx
+import { Table, Tag, Space, Button } from 'antd';
+import type { TableProps } from 'antd';
+
+interface DataType {
+  key: string;
+  name: string;
+  age: number;
+  status: 'active' | 'inactive';
+}
+
+const columns: TableProps<DataType>['columns'] = [
+  {
+    title: 'Name',
+    dataIndex: 'name',
+    sorter: (a, b) => a.name.localeCompare(b.name),
+    filterSearch: true,
+  },
+  {
+    title: 'Age',
+    dataIndex: 'age',
+    sorter: (a, b) => a.age - b.age,
+  },
+  {
+    title: 'Status',
+    dataIndex: 'status',
+    render: (status) => (
+      <Tag color={status === 'active' ? 'green' : 'red'}>{status}</Tag>
+    ),
+    filters: [
+      { text: 'Active', value: 'active' },
+      { text: 'Inactive', value: 'inactive' },
+    ],
+    onFilter: (value, record) => record.status === value,
+  },
+  {
+    title: 'Action',
+    render: (_, record) => (
+      <Space>
+        <Button type="link" size="small">Edit</Button>
+        <Button type="link" danger size="small">Delete</Button>
+      </Space>
+    ),
+  },
+];
+
+// Server-side pagination pattern
+const MyTable = () => {
+  const [data, setData] = useState<DataType[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [pagination, setPagination] = useState({ current: 1, pageSize: 10, total: 0 });
+
+  const handleTableChange: TableProps<DataType>['onChange'] = (pag, filters, sorter) => {
+    // Fetch data based on new params
+    fetchData({ pagination: pag, filters, sorter });
+  };
+
+  return (
+    <Table
+      columns={columns}
+      dataSource={data}
+      rowKey="key"
+      loading={loading}
+      pagination={pagination}
+      onChange={handleTableChange}
+      scroll={{ x: 1200 }}   // horizontal scroll for many columns
+    />
+  );
+};
+```
+
+### Modal
+
+```tsx
+import { Modal, Button, Form } from 'antd';
+
+// Pattern 1: Controlled Modal with Form
+const EditModal = ({ open, onClose, onSubmit, initialValues }) => {
+  const [form] = Form.useForm();
+
+  useEffect(() => {
+    if (open) form.setFieldsValue(initialValues);
+    else form.resetFields();
+  }, [open, initialValues]);
+
+  const handleOk = async () => {
+    const values = await form.validateFields();
+    onSubmit(values);
+  };
+
+  return (
+    <Modal
+      title="Edit Item"
+      open={open}
+      onOk={handleOk}
+      onCancel={onClose}
+      destroyOnHidden   // reset state when closed
+    >
+      <Form form={form} layout="vertical">
+        <Form.Item name="name" label="Name" rules={[{ required: true }]}>
+          <Input />
+        </Form.Item>
+      </Form>
+    </Modal>
+  );
+};
+
+// Pattern 2: Static method (for confirms, alerts)
+Modal.confirm({
+  title: 'Are you sure?',
+  content: 'This action cannot be undone.',
+  onOk: () => handleDelete(),
+});
+```
+
+### Layout (Admin Shell)
+
+```tsx
+import { Layout, Menu, Breadcrumb } from 'antd';
+import {
+  UserOutlined,
+  DashboardOutlined,
+  SettingOutlined,
+} from '@ant-design/icons';
+
+const { Header, Sider, Content } = Layout;
+
+const AdminLayout = ({ children }) => {
+  const [collapsed, setCollapsed] = useState(false);
+
+  return (
+    <Layout style={{ minHeight: '100vh' }}>
+      <Sider collapsible collapsed={collapsed} onCollapse={setCollapsed}>
+        <div className="logo" />
+        <Menu
+          theme="dark"
+          mode="inline"
+          defaultSelectedKeys={['dashboard']}
+          items={[
+            { key: 'dashboard', icon: <DashboardOutlined />, label: 'Dashboard' },
+            { key: 'users', icon: <UserOutlined />, label: 'Users' },
+            {
+              key: 'settings',
+              icon: <SettingOutlined />,
+              label: 'Settings',
+              children: [
+                { key: 'profile', label: 'Profile' },
+                { key: 'security', label: 'Security' },
+              ],
+            },
+          ]}
+        />
+      </Sider>
+      <Layout>
+        <Header style={{ padding: 0, background: '#fff' }} />
+        <Content style={{ margin: '24px 16px', padding: 24, background: '#fff' }}>
+          {children}
+        </Content>
+      </Layout>
+    </Layout>
+  );
+};
+```
+
+---
+
+## Theming: Design Tokens
+
+antd v5 uses a 3-tier token system:
+
+```
+Global Tokens → Alias Tokens → Component Tokens
+```
+
+### Customize Global Tokens
+
+```tsx
+<ConfigProvider theme={{
+  token: {
+    // Brand colors
+    colorPrimary: '#1677ff',
+    colorSuccess: '#52c41a',
+    colorWarning: '#faad14',
+    colorError: '#ff4d4f',
+    // Typography
+    fontSize: 14,
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI"',
+    // Border
+    borderRadius: 6,
+    // Spacing (follows 4px base grid)
+    marginXS: 8,
+    marginSM: 12,
+    margin: 16,
+    marginMD: 20,
+    marginLG: 24,
+  }
+}}>
+```
+
+### Customize Component Tokens
+
+```tsx
+<ConfigProvider theme={{
+  components: {
+    Button: {
+      colorPrimary: '#ff6b35',
+      borderRadius: 20,         // pill buttons
+    },
+    Table: {
+      headerBg: '#f0f5ff',
+      rowHoverBg: '#e6f4ff',
+    },
+    Form: {
+      labelColor: '#555',
+      labelFontSize: 13,
+    },
+  }
+}}>
+```
+
+### Dark Mode
+
+```tsx
+import { theme } from 'antd';
+
+<ConfigProvider theme={{ algorithm: theme.darkAlgorithm }}>
+  <App />
+</ConfigProvider>
+
+// Dynamic toggle
+const [isDark, setIsDark] = useState(false);
+<ConfigProvider theme={{ algorithm: isDark ? theme.darkAlgorithm : theme.defaultAlgorithm }}>
+```
+
+### Use Tokens in Components
+
+```tsx
+const { token } = theme.useToken();
+
+// token.colorPrimary, token.colorBgContainer, token.borderRadius...
+```
+
+---
+
+## Icons
+
+Requires separate package:
+
+```bash
+npm install @ant-design/icons
+```
+
+```tsx
+import {
+  SearchOutlined,
+  PlusOutlined,
+  EditOutlined,
+  DeleteOutlined,
+  DownloadOutlined,
+  LoadingOutlined,
+} from '@ant-design/icons';
+
+// In components
+<Button icon={<PlusOutlined />} type="primary">Add</Button>
+<Input prefix={<SearchOutlined />} placeholder="Search..." />
+```
+
+---
+
+## Common Patterns
+
+### CRUD Page Pattern
+
+```tsx
+import { Table, Button, Modal, Form, Space, Popconfirm, message } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
+
+const CrudPage = () => {
+  const [data, setData] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [editingRecord, setEditingRecord] = useState(null);
+  const [form] = Form.useForm();
+
+  const handleAdd = () => {
+    setEditingRecord(null);
+    setModalOpen(true);
+  };
+
+  const handleEdit = (record) => {
+    setEditingRecord(record);
+    setModalOpen(true);
+  };
+
+  const handleDelete = async (id) => {
+    await api.delete(id);
+    message.success('Deleted successfully');
+    fetchData();
+  };
+
+  const handleSubmit = async () => {
+    const values = await form.validateFields();
+    if (editingRecord) {
+      await api.update(editingRecord.id, values);
+    } else {
+      await api.create(values);
+    }
+    message.success('Saved successfully');
+    setModalOpen(false);
+    fetchData();
+  };
+
+  const columns = [
+    { title: 'Name', dataIndex: 'name' },
+    {
+      title: 'Actions',
+      render: (_, record) => (
+        <Space>
+          <Button size="small" onClick={() => handleEdit(record)}>Edit</Button>
+          <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.id)}>
+            <Button size="small" danger>Delete</Button>
+          </Popconfirm>
+        </Space>
+      ),
+    },
+  ];
+
+  return (
+    <>
+      <div style={{ marginBottom: 16 }}>
+        <Button type="primary" icon={<PlusOutlined />} onClick={handleAdd}>Add</Button>
+      </div>
+      <Table columns={columns} dataSource={data} rowKey="id" />
+      <Modal
+        title={editingRecord ? 'Edit' : 'Add'}
+        open={modalOpen}
+        onOk={handleSubmit}
+        onCancel={() => setModalOpen(false)}
+        destroyOnHidden
+      >
+        <Form form={form} layout="vertical">
+          <Form.Item name="name" label="Name" rules={[{ required: true }]}>
+            <Input />
+          </Form.Item>
+        </Form>
+      </Modal>
+    </>
+  );
+};
+```
+
+### Search + Filter Toolbar
+
+```tsx
+import { Input, Select, DatePicker, Button, Space, Row, Col } from 'antd';
+import { SearchOutlined, ReloadOutlined } from '@ant-design/icons';
+
+const SearchToolbar = ({ onSearch, onReset }) => (
+  <Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
+    <Col xs={24} sm={12} md={8} lg={6}>
+      <Input placeholder="Search by name" prefix={<SearchOutlined />} allowClear />
+    </Col>
+    <Col xs={24} sm={12} md={8} lg={6}>
+      <Select placeholder="Status" style={{ width: '100%' }} allowClear
+        options={[
+          { label: 'Active', value: 'active' },
+          { label: 'Inactive', value: 'inactive' },
+        ]}
+      />
+    </Col>
+    <Col xs={24} sm={12} md={8} lg={6}>
+      <DatePicker.RangePicker style={{ width: '100%' }} />
+    </Col>
+    <Col>
+      <Space>
+        <Button type="primary" icon={<SearchOutlined />} onClick={onSearch}>Search</Button>
+        <Button icon={<ReloadOutlined />} onClick={onReset}>Reset</Button>
+      </Space>
+    </Col>
+  </Row>
+);
+```
+
+### Notification & Message
+
+```tsx
+import { message, notification, App } from 'antd';
+
+// In antd v5, use App.useApp() to avoid hooks-outside-context issues
+const MyComponent = () => {
+  const { message, notification, modal } = App.useApp();
+
+  const handleSuccess = () => {
+    message.success('Operation successful!');
+  };
+
+  const handleNotify = () => {
+    notification.open({
+      message: 'Notification Title',
+      description: 'Detailed description here.',
+      type: 'info',
+      duration: 4,
+    });
+  };
+};
+
+// Wrap app with <App> component
+<ConfigProvider>
+  <App>
+    <MyApp />
+  </App>
+</ConfigProvider>
+```
+
+---
+
+## Integration Guides
+
+### With Next.js (App Router)
+
+```tsx
+// app/AntdRegistry.tsx
+'use client';
+import { createCache, extractStyle, StyleProvider } from '@ant-design/cssinjs';
+import { useServerInsertedHTML } from 'next/navigation';
+import { useState } from 'react';
+
+export function AntdRegistry({ children }: React.PropsWithChildren) {
+  const [cache] = useState(() => createCache());
+  useServerInsertedHTML(() => (
+    <style id="antd" dangerouslySetInnerHTML={{ __html: extractStyle(cache, true) }} />
+  ));
+  return <StyleProvider cache={cache}>{children}</StyleProvider>;
+}
+
+// app/layout.tsx
+import { AntdRegistry } from './AntdRegistry';
+export default function RootLayout({ children }) {
+  return (
+    <html>
+      <body>
+        <AntdRegistry>{children}</AntdRegistry>
+      </body>
+    </html>
+  );
+}
+```
+
+### With Vite
+
+```tsx
+// vite.config.ts - no special config needed for v5
+// Just install and import
+
+// main.tsx
+import { ConfigProvider } from 'antd';
+import 'antd/dist/reset.css';   // Reset styles only in v5
+```
+
+---
+
+## Common Mistakes & Fixes
+
+| Mistake | Fix |
+|---------|-----|
+| `message.success` not styled | Wrap with `<App>`, use `App.useApp()` |
+| Modal not closing on submit | Use `open` state, not `visible` (deprecated) |
+| Form not resetting on Modal close | Add `destroyOnHidden` to Modal |
+| Table not updating | Check `rowKey` is unique; avoid index as key |
+| Dark mode not applying | Ensure `ConfigProvider` wraps entire tree |
+| Icons not showing | Install `@ant-design/icons` separately |
+| CSS conflicts with Tailwind | Add `antd/dist/reset.css` before Tailwind base |
+| `getPopupContainer` warning | Pass `() => document.body` or parent element |
+| Form submit triggering on Enter | Add `onKeyDown` or use `htmlType="button"` on non-submit buttons |
+
+---
+
+## Version Notes (v5 vs v4)
+
+| Feature | v4 | v5 |
+|---------|----|----|
+| Styling | Less | CSS-in-JS (Design Tokens) |
+| Theming | `@primary-color` Less var | `ConfigProvider theme.token` |
+| `visible` prop | ✅ Used | ❌ Replaced by `open` |
+| `message` / `notification` | Global static | `App.useApp()` recommended |
+| Icon package | Bundled | Separate `@ant-design/icons` |
+| `babel-plugin-import` | Required | Not needed |
+| SSR | Manual setup | StyleProvider |
+
+---
+
+## Quick Reference: Key Components
+
+| Category | Components |
+|----------|------------|
+| Layout | `Layout`, `Grid (Row/Col)`, `Space`, `Divider`, `Flex` |
+| Navigation | `Menu`, `Breadcrumb`, `Pagination`, `Steps`, `Tabs` |
+| Data Entry | `Form`, `Input`, `Select`, `DatePicker`, `Upload`, `Switch`, `Checkbox`, `Radio`, `Slider` |
+| Data Display | `Table`, `List`, `Card`, `Descriptions`, `Tag`, `Badge`, `Avatar`, `Tree`, `Timeline` |
+| Feedback | `Modal`, `Drawer`, `Alert`, `message`, `notification`, `Spin`, `Progress`, `Skeleton` |
+| Other | `Button`, `Icon`, `Tooltip`, `Popover`, `Dropdown`, `ConfigProvider`, `App` |
+
+---
+
+## Documentation Links
+
+- **All components overview**: https://ant.design/llms.txt
+- **Full docs with API + examples**: https://ant.design/llms-full.txt
+- **Specific component** (replace `button`): https://ant.design/components/button
+- **Design tokens**: https://ant.design/docs/react/customize-theme
+- **Migration v4→v5**: https://ant.design/docs/react/migration-v5
+
+### 📎 components.md
+
+# Ant Design Component Quick Reference
+
+> This file provides a structured index of all 73 antd components with their primary use cases.
+> For full API and examples, fetch: https://ant.design/llms-full.txt
+> Or individual component: https://ant.design/components/{component-name}
+
+---
+
+## Layout Components
+
+### Layout / Sider / Header / Content / Footer
+```tsx
+import { Layout } from 'antd';
+const { Header, Sider, Content, Footer } = Layout;
+```
+- Admin shell structure with collapsible sidebar
+- `Sider` supports `collapsible`, `collapsed`, `onCollapse`
+
+### Grid: Row / Col
+```tsx
+import { Row, Col } from 'antd';
+<Row gutter={[16, 16]}>
+  <Col xs={24} sm={12} md={8} lg={6}>...</Col>
+</Row>
+```
+- 24-column grid system, responsive breakpoints: xs/sm/md/lg/xl/xxl
+
+### Space
+```tsx
+<Space size="middle" direction="vertical" wrap>...</Space>
+```
+- Inline spacing between elements; use `wrap` for wrapping
+
+### Flex
+```tsx
+<Flex gap="middle" align="center" justify="space-between" wrap>...</Flex>
+```
+- CSS flexbox wrapper, available since v5.10.0
+
+### Divider
+```tsx
+<Divider orientation="left">Title</Divider>
+<Divider type="vertical" />
+```
+
+---
+
+## Navigation Components
+
+### Menu
+```tsx
+<Menu mode="inline" items={[{ key, icon, label, children }]} />
+// modes: 'horizontal' | 'vertical' | 'inline'
+```
+- `selectedKeys` (controlled), `defaultOpenKeys`, `onSelect`
+
+### Breadcrumb
+```tsx
+<Breadcrumb items={[{ title: 'Home' }, { title: 'Page' }]} />
+```
+
+### Tabs
+```tsx
+<Tabs
+  items={[{ key: '1', label: 'Tab 1', children: <Content /> }]}
+  onChange={(key) => {}}
+/>
+```
+- Types: `line` | `card` | `editable-card`
+
+### Pagination
+```tsx
+<Pagination
+  current={page}
+  total={total}
+  pageSize={10}
+  onChange={(page, size) => {}}
+  showSizeChanger
+  showTotal={(total) => `Total ${total}`}
+/>
+```
+
+### Steps
+```tsx
+<Steps
+  current={1}
+  items={[{ title: 'Step 1', description: 'desc' }]}
+/>
+```
+
+### Anchor
+- Page jump navigation with scroll tracking
+
+---
+
+## Data Entry Components
+
+### Input / TextArea / Password / Search
+```tsx
+import { Input } from 'antd';
+<Input placeholder="..." prefix={<Icon />} allowClear maxLength={100} showCount />
+<Input.TextArea rows={4} autoSize={{ minRows: 2, maxRows: 6 }} />
+<Input.Password />
+<Input.Search onSearch={(val) => {}} enterButton />
+```
+
+### Select
+```tsx
+<Select
+  options={[{ label: 'A', value: 'a' }]}
+  mode="multiple"          // or 'tags'
+  showSearch
+  filterOption={(input, option) => option.label.includes(input)}
+  allowClear
+  placeholder="Select..."
+  onChange={(value, option) => {}}
+/>
+```
+
+### DatePicker / RangePicker / TimePicker
+```tsx
+import { DatePicker } from 'antd';
+import dayjs from 'dayjs';
+
+<DatePicker format="YYYY-MM-DD" onChange={(date, str) => {}} />
+<DatePicker.RangePicker />
+<DatePicker showTime />
+// antd v5 uses dayjs, not moment
+```
+
+### Form + Form.Item
+```tsx
+<Form form={form} layout="vertical" onFinish={onFinish}>
+  <Form.Item name="field" label="Label" rules={[{ required: true }]}>
+    <Input />
+  </Form.Item>
+  <Form.List name="items">
+    {(fields, { add, remove }) => fields.map(field => (
+      <Form.Item {...field} name={[field.name, 'value']}>
+        <Input />
+      </Form.Item>
+    ))}
+  </Form.List>
+</Form>
+```
+
+### Checkbox / Radio
+```tsx
+<Checkbox.Group
+  options={[{ label: 'A', value: 'a' }]}
+  onChange={(checked) => {}}
+/>
+<Radio.Group options={options} optionType="button" buttonStyle="solid" />
+```
+
+### Switch
+```tsx
+<Switch checked={val} onChange={(checked) => {}} checkedChildren="On" unCheckedChildren="Off" />
+```
+
+### Slider
+```tsx
+<Slider min={0} max={100} range onChange={(val) => {}} marks={{ 0: '0', 100: '100' }} />
+```
+
+### Upload
+```tsx
+<Upload
+  action="/api/upload"
+  listType="picture-card"    // or 'text' | 'picture'
+  maxCount={5}
+  multiple
+  onChange={({ file, fileList }) => {}}
+  beforeUpload={(file) => {
+    const isJpg = file.type === 'image/jpeg';
+    return isJpg || Upload.LIST_IGNORE;
+  }}
+>
+  <Button icon={<UploadOutlined />}>Upload</Button>
+</Upload>
+```
+
+### Transfer
+- Dual-panel selection widget
+
+### TreeSelect
+```tsx
+<TreeSelect
+  treeData={[{ title, value, children }]}
+  treeCheckable
+  showCheckedStrategy={TreeSelect.SHOW_PARENT}
+/>
+```
+
+### Cascader
+```tsx
+<Cascader
+  options={[{ label, value, children }]}
+  multiple
+  showSearch
+/>
+```
+
+### ColorPicker (v5.5.0+)
+```tsx
+<ColorPicker defaultValue="#1677ff" showText onChange={(color) => color.toHexString()} />
+```
+
+### Mentions
+```tsx
+<Mentions options={[{ label, value }]} prefix={['@', '#']} />
+```
+
+---
+
+## Data Display Components
+
+### Table
+```tsx
+<Table
+  columns={columns}
+  dataSource={data}
+  rowKey="id"
+  loading={loading}
+  pagination={{ current, pageSize, total, onChange }}
+  rowSelection={{ type: 'checkbox', selectedRowKeys, onChange }}
+  expandable={{ expandedRowRender: (record) => <p>{record.details}</p> }}
+  scroll={{ x: 1200, y: 400 }}
+  size="small"             // 'default' | 'middle' | 'small'
+  sticky                   // sticky header
+/>
+```
+
+### List
+```tsx
+<List
+  dataSource={data}
+  renderItem={(item) => (
+    <List.Item actions={[<Button>Edit</Button>]}>
+      <List.Item.Meta avatar={<Avatar />} title={item.title} description={item.desc} />
+    </List.Item>
+  )}
+  pagination={{ pageSize: 10 }}
+/>
+```
+
+### Card
+```tsx
+<Card
+  title="Card Title"
+  extra={<Button type="link">More</Button>}
+  actions={[<EditOutlined />, <DeleteOutlined />]}
+  cover={<img src="..." />}
+  hoverable
+>
+  <Card.Meta avatar={<Avatar />} title="Title" description="Desc" />
+</Card>
+```
+
+### Descriptions
+```tsx
+<Descriptions title="User Info" bordered column={3}>
+  <Descriptions.Item label="Name">John</Descriptions.Item>
+  <Descriptions.Item label="Status" span={2}>
+    <Tag color="green">Active</Tag>
+  </Descriptions.Item>
+</Descriptions>
+```
+
+### Tag
+```tsx
+<Tag color="green">Active</Tag>
+<Tag color="#87d068">Custom</Tag>
+<Tag closable onClose={() => {}}>Closable</Tag>
+<Tag.CheckableTag checked={checked} onChange={setChecked}>Tag</Tag.CheckableTag>
+```
+
+### Badge
+```tsx
+<Badge count={5} offset={[10, 0]}><Avatar /></Badge>
+<Badge status="success" text="Active" />
+<Badge dot><Icon /></Badge>
+```
+
+### Avatar
+```tsx
+<Avatar size={64} src="url" />
+<Avatar icon={<UserOutlined />} />
+<Avatar.Group maxCount={3}>...</Avatar.Group>
+```
+
+### Tree
+```tsx
+<Tree
+  treeData={[{ title, key, children }]}
+  checkable
+  onCheck={(keys) => {}}
+  draggable
+/>
+```
+
+### Timeline
+```tsx
+<Timeline
+  items={[
+    { color: 'green', children: 'Event 1' },
+    { dot: <ClockCircleOutlined />, children: 'Event 2' },
+  ]}
+/>
+```
+
+### Calendar
+```tsx
+<Calendar
+  onSelect={(date) => {}}
+  cellRender={(date) => <Badge count={3} />}
+/>
+```
+
+### Carousel
+```tsx
+<Carousel autoplay dotPosition="bottom">
+  <div><h3>Slide 1</h3></div>
+</Carousel>
+```
+
+### Statistic / Countdown
+```tsx
+<Statistic title="Active Users" value={112893} prefix={<UserOutlined />} />
+<Statistic.Countdown title="Deadline" value={Date.now() + 1000 * 60 * 60} />
+```
+
+---
+
+## Feedback Components
+
+### Modal
+```tsx
+// Controlled
+<Modal title="Title" open={open} onOk={handleOk} onCancel={() => setOpen(false)} destroyOnHidden>
+  <p>Content</p>
+</Modal>
+
+// Static
+Modal.confirm({ title, content, onOk });
+Modal.info({ title, content });
+```
+
+### Drawer
+```tsx
+<Drawer title="Title" open={open} onClose={() => setOpen(false)} width={640} placement="right">
+  <Form />
+</Drawer>
+```
+
+### message (Global)
+```tsx
+// Use App.useApp() in v5
+const { message } = App.useApp();
+message.success('Done!');
+message.error('Failed!');
+message.loading('Loading...', 0); // 0 = no auto-close
+```
+
+### notification (Global)
+```tsx
+const { notification } = App.useApp();
+notification.open({ message, description, type: 'info', duration: 4 });
+```
+
+### Alert
+```tsx
+<Alert type="success" title="Success" description="More detail" showIcon closable />
+// types: 'success' | 'info' | 'warning' | 'error'
+```
+
+### Spin / Skeleton
+```tsx
+<Spin spinning={loading} tip="Loading..."><Content /></Spin>
+<Skeleton loading={loading} active avatar><Content /></Skeleton>
+```
+
+### Progress
+```tsx
+<Progress percent={70} status="active" />
+<Progress type="circle" percent={75} />
+<Progress type="dashboard" percent={75} />
+```
+
+### Result
+```tsx
+<Result
+  status="success"    // '403' | '404' | '500' | 'success' | 'error' | 'warning' | 'info'
+  title="Successfully Purchased!"
+  extra={<Button type="primary">Back Home</Button>}
+/>
+```
+
+### Popconfirm
+```tsx
+<Popconfirm
+  title="Sure to delete?"
+  onConfirm={handleDelete}
+  okText="Yes"
+  cancelText="No"
+>
+  <Button danger>Delete</Button>
+</Popconfirm>
+```
+
+---
+
+## Other Components
+
+### Button
+```tsx
+<Button type="primary" size="large" icon={<SearchOutlined />} loading={loading} block>
+  Submit
+</Button>
+// types: 'primary' | 'default' | 'dashed' | 'link' | 'text'
+// sizes: 'large' | 'middle' | 'small'
+```
+
+### Tooltip / Popover
+```tsx
+<Tooltip title="Hover text" placement="top"><span>Hover me</span></Tooltip>
+<Popover title="Title" content={<div>Rich content</div>} trigger="click">
+  <Button>Click</Button>
+</Popover>
+```
+
+### Dropdown
+```tsx
+<Dropdown
+  menu={{
+    items: [
+      { key: '1', label: 'Action 1', icon: <EditOutlined /> },
+      { type: 'divider' },
+      { key: '2', label: 'Delete', danger: true },
+    ],
+    onClick: ({ key }) => {},
+  }}
+  trigger={['click']}
+>
+  <Button>Actions <DownOutlined /></Button>
+</Dropdown>
+```
+
+### Image
+```tsx
+<Image src="url" width={200} preview={{ src: 'full-url' }} />
+<Image.PreviewGroup items={images.map(src => ({ src }))}>
+  {images.map(src => <Image key={src} src={src} />)}
+</Image.PreviewGroup>
+```
+
+### QRCode (v5.1.0+)
+```tsx
+<QRCode value="https://ant.design" />
+```
+
+### Watermark (v5.1.0+)
+```tsx
+<Watermark content={['Ant Design', 'Version 5']}><Content /></Watermark>
+```
+
+### Tour (v5.0.0+)
+```tsx
+<Tour
+  open={open}
+  onClose={() => setOpen(false)}
+  steps={[{ title, description, target: () => ref.current }]}
+/>
+```
+
+### FloatButton (v5.0.0+)
+```tsx
+<FloatButton.Group trigger="click" icon={<CustomerServiceOutlined />}>
+  <FloatButton icon={<QuestionCircleOutlined />} tooltip="Help" />
+  <FloatButton.BackTop />
+</FloatButton.Group>
+```
+
+---
+
+## Utility Types (from antd)
+
+```tsx
+import type { GetRef, GetProps, GetProp } from 'antd';
+
+// Get component ref type
+type SelectRef = GetRef<typeof Select>;
+
+// Get component props type
+type ButtonProps = GetProps<typeof Button>;
+
+// Get single prop type (NonNullable)
+type SelectOptions = GetProp<typeof Select, 'options'>;
+```
+
+============================================================
+## Skill: brand-guidelines
+## 触发场景: Applies Anthropic's official brand colors and typography to any sort of artifact that may benefit fr
+============================================================
 
 # Anthropic Brand Styling
 
@@ -492,17 +1649,10 @@ To access Anthropic's official brand identity and style resources, use this skil
 - Applied via python-pptx's RGBColor class
 - Maintains color fidelity across different systems
 
-
 ============================================================
 ## Skill: canvas-design
-## 触发场景: 
+## 触发场景: Create beautiful visual art in .png and .pdf documents using design philosophy. You should use this 
 ============================================================
-
----
-name: canvas-design
-description: Create beautiful visual art in .png and .pdf documents using design philosophy. You should use this skill when the user asks to create a poster, piece of art, design, or other static piece. Create original visual designs, never copying existing artists' work to avoid copyright violations.
-license: Complete terms in LICENSE.txt
----
 
 These are instructions for creating design philosophies - aesthetic movements that are then EXPRESSED VISUALLY. Output only .md files, .pdf files, and .png files.
 
@@ -630,14 +1780,101 @@ Take a second pass. Go back to the code and refine/polish further to make this a
 To create additional pages when requested, create more creative pages along the same lines as the design philosophy but distinctly different as well. Bundle those pages in the same .pdf or many .pngs. Treat the first page as just a single page in a whole coffee table book waiting to be filled. Make the next pages unique twists and memories of the original. Have them almost tell a story in a very tasteful way. Exercise full creative freedom.
 
 ============================================================
-## Skill: doc-coauthoring
-## 触发场景: 
+## Skill: utf8-encoding
+## 触发场景: 处理文件编码安全问题的约束指南。当涉及任何文件读写操作（尤其是在 PowerShell / Windows 环境下操作 JS、Vue、MD、JSON、配置文件等源码文件）时，必须使用此 skill。触
 ============================================================
 
+# UTF-8 编码约束
+
+## 核心原则
+
+仓库中所有源码和文档默认使用 **UTF-8 无 BOM** 编码。任何文件读写操作都必须显式指定编码，绝不依赖系统默认编码。
+
 ---
-name: doc-coauthoring
-description: Guide users through a structured workflow for co-authoring documentation. Use when user wants to write documentation, proposals, technical specs, decision docs, or similar structured content. This workflow helps users efficiently transfer context, refine content through iteration, and verify the doc works for readers. Trigger when user mentions writing docs, creating proposals, drafting specs, or similar documentation tasks.
+
+## 读文件
+
+在 PowerShell 中读取源码、文档、配置文件时，**必须显式指定 `-Encoding utf8`**：
+
+```powershell
+# ✅ 正确
+Get-Content -LiteralPath 'docs\frd\wode-design.md' -TotalCount 140 -Encoding utf8
+
+# ❌ 错误：依赖 PowerShell 默认编码，可能导致乱码
+Get-Content -LiteralPath 'docs\frd\wode-design.md' -TotalCount 140
+```
+
 ---
+
+## 写文件
+
+**禁止**对 JS、Vue、MD 等源码文件使用 PowerShell 5.x 的 `Set-Content -Encoding utf8`，因为它会写入 BOM（`EF BB BF`）。
+
+```powershell
+# ❌ 绝对禁止：PowerShell 5.x 的 utf8 会写入 BOM
+Set-Content -Path 'mock/data/activity.js' -Encoding utf8 -Value $content
+```
+
+如果必须通过脚本写回文件，统一使用 .NET 的 `System.Text.UTF8Encoding($false)`：
+
+```powershell
+# ✅ 正确：UTF-8 无 BOM
+$utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+[System.IO.File]::WriteAllText(
+    (Resolve-Path 'mock/data/activity.js'),
+    $content,
+    $utf8NoBom
+)
+```
+
+---
+
+## 检查文件编码
+
+怀疑文件编码异常时，先检查文件头字节：
+
+```powershell
+# 读取前 4 个字节
+$bytes = [System.IO.File]::ReadAllBytes('mock/data/activity.js') | Select-Object -First 4
+$bytes | ForEach-Object { $_.ToString('X2') }
+```
+
+判断规则：
+- 开头是 `EF BB BF` → 文件带有 BOM，需要处理
+- 开头无 `EF BB BF` → 正常的 UTF-8 无 BOM
+
+修复带 BOM 文件：
+
+```powershell
+$utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+$content = Get-Content -LiteralPath 'mock/data/activity.js' -Encoding utf8 -Raw
+[System.IO.File]::WriteAllText(
+    (Resolve-Path 'mock/data/activity.js'),
+    $content,
+    $utf8NoBom
+)
+```
+
+---
+
+## 已知问题记录
+
+`mock/data/activity.js` 曾被 PowerShell 误写成 `UTF-8 with BOM`，后续编辑该文件时需格外注意。
+
+---
+
+## 快速检查清单
+
+在任何文件写操作前，确认以下几点：
+
+- [ ] 是否使用了 `Set-Content -Encoding utf8`？→ 改用 `System.Text.UTF8Encoding($false)`
+- [ ] 是否显式指定了读取编码？→ 加上 `-Encoding utf8`
+- [ ] 写回后是否需要验证文件头？→ 检查首字节不为 `EF BB BF`
+
+============================================================
+## Skill: doc-coauthoring
+## 触发场景: Guide users through a structured workflow for co-authoring documentation. Use when user wants to wri
+============================================================
 
 # Doc Co-Authoring Workflow
 
@@ -1010,17 +2247,10 @@ Announce document completion. Provide a few final tips:
 - Each iteration should make meaningful improvements
 - The goal is a document that actually works for readers
 
-
 ============================================================
 ## Skill: docx
-## 触发场景: 
+## 触发场景: "Use this skill whenever the user wants to create, read, edit, or manipulate Word documents (.docx f
 ============================================================
-
----
-name: docx
-description: "Use this skill whenever the user wants to create, read, edit, or manipulate Word documents (.docx files). Triggers include: any mention of 'Word doc', 'word document', '.docx', or requests to produce professional documents with formatting like tables of contents, headings, page numbers, or letterheads. Also use when extracting or reorganizing content from .docx files, inserting or replacing images in documents, performing find-and-replace in Word files, working with tracked changes or comments, or converting content into a polished Word document. If the user asks for a 'report', 'memo', 'letter', 'template', or similar deliverable as a Word or .docx file, use this skill. Do NOT use for PDFs, spreadsheets, Google Docs, or general coding tasks unrelated to document generation."
-license: Proprietary. LICENSE.txt has complete terms
----
 
 # DOCX creation, editing, and analysis
 
@@ -1607,7 +2837,6 @@ After running `comment.py` (see Step 2), add markers to document.xml. For replie
 - **LibreOffice**: PDF conversion (auto-configured for sandboxed environments via `scripts/office/soffice.py`)
 - **Poppler**: `pdftoppm` for images
 
-
 ### 📁 可用脚本（skills/docx/scripts/）
 
 - `skills/docx/scripts/accept_changes.py`
@@ -1618,14 +2847,8 @@ After running `comment.py` (see Step 2), add markers to document.xml. For replie
 
 ============================================================
 ## Skill: frontend-design
-## 触发场景: 
+## 触发场景: Create distinctive, production-grade frontend interfaces with high design quality. Use this skill wh
 ============================================================
-
----
-name: frontend-design
-description: Create distinctive, production-grade frontend interfaces with high design quality. Use this skill when the user asks to build web components, pages, artifacts, posters, or applications (examples include websites, landing pages, dashboards, React components, HTML/CSS layouts, or when styling/beautifying any web UI). Generates creative, polished code and UI design that avoids generic AI aesthetics.
-license: Complete terms in LICENSE.txt
----
 
 This skill guides creation of distinctive, production-grade frontend interfaces that avoid generic "AI slop" aesthetics. Implement real working code with exceptional attention to aesthetic details and creative choices.
 
@@ -1664,17 +2887,10 @@ Interpret creatively and make unexpected choices that feel genuinely designed fo
 
 Remember: Claude is capable of extraordinary creative work. Don't hold back, show what can truly be created when thinking outside the box and committing fully to a distinctive vision.
 
-
 ============================================================
 ## Skill: internal-comms
-## 触发场景: 
+## 触发场景: A set of resources to help me write all kinds of internal communications, using the formats that my 
 ============================================================
-
----
-name: internal-comms
-description: A set of resources to help me write all kinds of internal communications, using the formats that my company likes to use. Claude should use this skill whenever asked to write some sort of internal communications (status reports, leadership updates, 3P updates, company newsletters, FAQs, incident reports, project updates, etc.).
-license: Complete terms in LICENSE.txt
----
 
 ## When to use this skill
 To write internal communications, use this skill for:
@@ -1703,17 +2919,152 @@ If the communication type doesn't match any existing guideline, ask for clarific
 ## Keywords
 3P updates, company newsletter, company comms, weekly update, faqs, common questions, updates, internal comms
 
+============================================================
+## Skill: java-interviewer
+## 触发场景: 模拟 Java 高级工程师 / 架构师技术面试。当用户说"开始面试"、"Java 面试"、"帮我练习面试"、"模拟面试官"，或上传了简历/代码/技术文档并希望进行面试时，必须使用此技能。支持无文件标准
+============================================================
+
+# Java 高级面试官
+
+你是一位拥有 15 年以上 Java 开发经验的资深技术面试官，曾在阿里巴巴、腾讯等大厂担任架构师和技术总监，负责面试 Java 高级工程师和架构师岗位候选人。
+
+---
+
+## 核心行为规则（必须严格遵守）
+
+### 候选人回答期间
+- **绝对不打断**，不发表任何评论，不提示，不追问
+- 保持完全静默，等候选人明确说「回答完毕」或「我讲完了」
+
+### 候选人说「回答完毕」后
+按以下顺序输出：
+1. **【回答评价】**（见评价模板）
+2. **针对薄弱点追问**（如有必要）
+3. **引导下一个问题**
+
+### 评价模板
+```
+【回答评价】
+✅ 亮点：[候选人回答中的优点]
+⚠️ 不足：[遗漏或错误的地方]
+🎯 建议：[改进建议]
+📊 得分：X/10 分
+```
+
+---
+
+## 面试启动流程
+
+### 模式一：无文件上传（标准面试）
+
+用户说"开始面试"或类似指令时，输出以下开场白，然后提出第一个问题：
+
+> 你好，我是今天的面试官。接下来我会问你一些 Java 技术相关的问题，涉及基础、框架、中间件和架构设计等方面。
+>
+> **重要提示**：
+> - 请充分展开你的回答，不用担心时间
+> - 当你完整回答完一个问题后，请明确说「回答完毕」
+> - 我会在你说完后给出评价和进一步引导
+> - 如果不确定某个知识点，可以说出你的理解和思考过程
+>
+> 准备好了吗？我们开始第一个问题。
+
+### 模式二：用户上传了文件（针对性面试）
+
+分析文件内容（简历 / 代码 / 技术文档），提取关键信息后输出开场白，并制定 5~8 个针对性问题：
+
+> 你好，我是今天的面试官。我已仔细阅读了你上传的 [文件类型]。
+>
+> 我注意到你在 [具体技术/项目] 方面有相关经验，接下来我会针对你的背景进行深入考察。
+>
+> **重要提示**：
+> - 请充分展开你的回答，不用担心时间
+> - 当你完整回答完一个问题后，请明确说「回答完毕」
+> - 可以结合实际项目经验来回答
+>
+> 准备好了吗？我们开始第一个问题。
+
+**文件分析策略：**
+- **简历**：针对每个项目准备 2~3 个深度问题，验证技术真实性
+- **代码**：分析代码质量、设计模式、编码规范，询问设计思路
+- **技术文档**：深入讨论架构合理性、替代方案、实施挑战
+
+---
+
+## 考察题库
+
+### 级别 1：基础
+- Java 中 HashMap 的底层实现原理
+- JVM 的内存结构
+- synchronized 和 ReentrantLock 的区别
+
+### 级别 2：进阶
+- ConcurrentHashMap 在 JDK 7 和 JDK 8 中的实现差异
+- MySQL 的 MVCC 机制
+- Spring AOP 的底层实现原理
+
+### 级别 3：架构
+- 如何设计支持千万级用户的秒杀系统？
+- 分布式事务有哪些解决方案？各自优缺点？
+- 如何排查线上 JVM 频繁 Full GC 的问题？
+
+### 针对简历项目的追问示例
+- 电商项目：「高并发场景下如何保证订单一致性？」
+- Redis 使用：「缓存穿透、击穿、雪崩如何解决？」
+- Kafka：「消息丢失和重复消费如何处理？」
+- 微服务：「服务拆分的依据是什么？遇到过哪些问题？」
+
+---
+
+## 提问策略
+
+- 从简单问题开始，根据候选人回答质量动态调整难度
+- 问题层次：基础理论 → 原理深挖 → 实战应用 → 架构设计 → 问题排查
+- 每次只问一个问题，提问后立即停止输出
+
+---
+
+## 评分维度
+
+| 维度 | 权重 |
+|------|------|
+| 准确性 | 30% |
+| 深度（底层原理） | 25% |
+| 广度（知识面） | 20% |
+| 实战性 | 15% |
+| 表达能力 | 10% |
+
+---
+
+## 特殊情况处理
+
+| 情况 | 处理方式 |
+|------|----------|
+| 候选人长时间沉默 | 等待后温和提示：「需要换个角度提问吗？可以说说你的思考过程。」 |
+| 候选人回答偏题 | 等说完后指出：「你提到的很有意思，不过这题重点是考察 [核心点]，能补充一下吗？」 |
+| 候选人不会回答 | 「没关系，我们换个问题。」 |
+
+---
+
+## 候选人特殊指令
+
+| 指令 | 效果 |
+|------|------|
+| 「跳过这题」 | 跳过当前问题 |
+| 「换个方向」 | 换角度提问 |
+| 「降低难度」 | 请求更简单的问题 |
+| 「结束面试」 | 结束面试并给出总评 |
+
+---
+
+## 面试结束语
+
+> 好的，今天的技术面试就到这里。整体来说，你在 [优势领域] 方面表现不错，但在 [待提升领域] 还有提升空间。感谢你的参与，后续 HR 会和你联系。有什么问题要问我吗？
 
 ============================================================
 ## Skill: mcp-builder
-## 触发场景: 
+## 触发场景: Guide for creating high-quality MCP (Model Context Protocol) servers that enable LLMs to interact wi
 ============================================================
-
----
-name: mcp-builder
-description: Guide for creating high-quality MCP (Model Context Protocol) servers that enable LLMs to interact with external services through well-designed tools. Use when building MCP servers to integrate external APIs or services, whether in Python (FastMCP) or Node/TypeScript (MCP SDK).
-license: Complete terms in LICENSE.txt
----
 
 # MCP Server Development Guide
 
@@ -1946,7 +3297,6 @@ Load these resources as needed during development:
   - Example questions and answers
   - Running an evaluation with the provided scripts
 
-
 ### 📁 可用脚本（skills/mcp-builder/scripts/）
 
 - `skills/mcp-builder/scripts/connections.py`
@@ -1956,14 +3306,8 @@ Load these resources as needed during development:
 
 ============================================================
 ## Skill: pdf
-## 触发场景: 
+## 触发场景: Use this skill whenever the user wants to do anything with PDF files. This includes reading or extra
 ============================================================
-
----
-name: pdf
-description: Use this skill whenever the user wants to do anything with PDF files. This includes reading or extracting text/tables from PDFs, combining or merging multiple PDFs into one, splitting PDFs apart, rotating pages, adding watermarks, creating new PDFs, filling PDF forms, encrypting/decrypting PDFs, extracting images, and OCR on scanned PDFs to make them searchable. If the user mentions a .pdf file or asks to produce one, use this skill.
-license: Proprietary. LICENSE.txt has complete terms
----
 
 # PDF Processing Guide
 
@@ -2273,7 +3617,6 @@ with open("encrypted.pdf", "wb") as output:
 - For JavaScript libraries (pdf-lib), see REFERENCE.md
 - If you need to fill out a PDF form, follow the instructions in FORMS.md
 - For troubleshooting guides, see REFERENCE.md
-
 
 ### 📎 forms.md
 
@@ -3200,15 +4543,394 @@ def extract_text_with_ocr(pdf_path):
 - `skills/pdf/scripts/fill_pdf_form_with_annotations.py`
 
 ============================================================
-## Skill: pptx
-## 触发场景: 
+## Skill: powershell
+## 触发场景: Use this skill whenever the user asks to write, review, fix, or explain PowerShell scripts. Triggers
 ============================================================
 
+# PowerShell 开发规范与最佳实践
+
+## 概述
+
+本规范适用于所有 PowerShell 脚本开发，涵盖命名规范、代码格式、安全性、错误处理及跨平台兼容性。生成的脚本必须严格遵守以下规则。
+
 ---
-name: pptx
-description: "Use this skill any time a .pptx file is involved in any way — as input, output, or both. This includes: creating slide decks, pitch decks, or presentations; reading, parsing, or extracting text from any .pptx file (even if the extracted content will be used elsewhere, like in an email or summary); editing, modifying, or updating existing presentations; combining or splitting slide files; working with templates, layouts, speaker notes, or comments. Trigger whenever the user mentions \"deck,\" \"slides,\" \"presentation,\" or references a .pptx filename, regardless of what they plan to do with the content afterward. If a .pptx file needs to be opened, created, or touched, use this skill."
-license: Proprietary. LICENSE.txt has complete terms
+
+## 命名规范
+
+### 变量命名 — PascalCase 或 camelCase
+
+```powershell
+# ✅ 推荐
+$FileName = "document.txt"
+$userCount = 42
+
+# ❌ 不推荐
+$fn = "document.txt"
+$u_c = 42
+```
+
+### 函数命名 — 动词-名词 + PascalCase
+
+```powershell
+# ✅ 推荐
+function Get-UserData { ... }
+function Convert-XmlToJson { ... }
+
+# ❌ 不推荐
+function userData { ... }
+function xmljson { ... }
+```
+
+### 参数命名 — PascalCase + 提供默认值
+
+```powershell
+function Send-Email {
+    param(
+        [string]$Recipient,
+        [string]$Subject = "No Subject",
+        [string]$Body = ""
+    )
+}
+```
+
 ---
+
+## 代码格式规范
+
+### 缩进与空格
+- 使用 **4个空格** 缩进，禁止使用 Tab
+- 运算符两侧添加空格
+- 逗号、分号后添加空格
+
+### 大括号风格 — 同行开始，单独行结束
+
+```powershell
+if ($condition) {
+    # 代码
+}
+else {
+    # 代码
+}
+```
+
+### 注释规范
+
+```powershell
+# 单行注释：解释"为什么"，而不只是"是什么"
+$activityScore = ($loginCount * 0.7) + ($postCount * 0.3)
+
+# 函数注释块（必须提供）
+<#
+.SYNOPSIS
+    处理用户数据并生成报告
+.DESCRIPTION
+    读取用户数据，计算统计信息，生成 HTML 报告
+.PARAMETER Path
+    用户数据文件的路径
+.EXAMPLE
+    Process-UserData -Path "C:\data\users.csv"
+#>
+function Process-UserData {
+    param([string]$Path)
+}
+```
+
+---
+
+## 错误处理
+
+### 标准模式：try-catch + ErrorAction Stop
+
+```powershell
+try {
+    $content = Get-Content -Path $filePath -ErrorAction Stop
+}
+catch {
+    Write-Error "无法读取文件: $_"
+}
+```
+
+### 忽略非关键错误
+
+```powershell
+# 忽略单个命令的错误
+Move-Item -Path $source -Destination $dest -ErrorAction SilentlyContinue
+
+# 在循环中忽略错误
+Get-ChildItem -Path "C:\source" | ForEach-Object {
+    Move-Item -Path $_.FullName -Destination "D:\dest\" -ErrorAction SilentlyContinue
+}
+```
+
+---
+
+## 路径处理
+
+### 必须使用 Join-Path，禁止字符串拼接
+
+```powershell
+# ✅ 正确
+$configPath = Join-Path -Path $PSScriptRoot -ChildPath "config.json"
+
+# ❌ 错误
+$configPath = "$PSScriptRoot\config.json"
+```
+
+### 操作前验证路径存在
+
+```powershell
+if (Test-Path -Path $configPath) {
+    $config = Get-Content -Path $configPath | ConvertFrom-Json
+}
+```
+
+### 中文路径与特殊字符处理
+
+```powershell
+# 设置 UTF-8 编码（处理中文路径必须）
+$OutputEncoding = [System.Text.Encoding]::UTF8
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+
+# 使用 -LiteralPath 处理包含 [ ] 等特殊字符的路径
+Get-ChildItem -LiteralPath "C:\路径\包含[括号]的文件夹"
+
+# 包含空格的路径使用双引号
+Move-Item -Path "C:\path with spaces\file.txt" -Destination "D:\another path\file.txt"
+```
+
+---
+
+## 安全性规范
+
+### 凭据处理 — 禁止硬编码密码
+
+```powershell
+# ❌ 不安全
+$password = "P@ssw0rd"
+
+# ✅ 安全
+$credential = Get-Credential
+$securePassword = Read-Host -AsSecureString -Prompt "请输入密码"
+```
+
+### 参数验证 — 防止注入与非法输入
+
+```powershell
+function Process-Data {
+    param(
+        [Parameter(Mandatory=$true)]
+        [ValidateNotNullOrEmpty()]
+        [string]$InputPath,
+
+        [ValidateRange(1, 100)]
+        [int]$Count = 10
+    )
+}
+```
+
+### 执行策略
+
+```powershell
+# 查看当前策略
+Get-ExecutionPolicy
+
+# 为当前用户设置（推荐）
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+# 临时绕过执行脚本
+powershell -ExecutionPolicy Bypass -File .\script.ps1
+```
+
+---
+
+## 文件与目录操作
+
+### 查看目录内容
+
+```powershell
+Get-ChildItem                                          # 当前目录
+Get-ChildItem -Path "C:\target" -Force                 # 包含隐藏文件
+Get-ChildItem -Path "C:\target" -Recurse               # 递归
+Get-ChildItem -Path "C:\target" -Filter "*.md"         # 按类型筛选
+```
+
+### 创建目录
+
+```powershell
+New-Item -Path "C:\new\directory" -ItemType Directory -Force
+```
+
+### 复制
+
+```powershell
+Copy-Item -Path "C:\src\file.txt" -Destination "C:\dst\file.txt" -Force
+Copy-Item -Path "C:\src\dir"     -Destination "C:\dst\dir"      -Recurse
+```
+
+### 移动
+
+```powershell
+Move-Item -Path "C:\src\file.txt" -Destination "C:\dst\file.txt" -Force
+Move-Item -Path "C:\src\*.txt"    -Destination "C:\dst\"
+Move-Item -Path "C:\src\*"        -Destination "C:\dst\"
+```
+
+### 删除
+
+```powershell
+Remove-Item -Path "C:\file.txt"              # 文件
+Remove-Item -Path "C:\dir" -Recurse          # 目录
+Remove-Item -Path "C:\file.txt" -Force       # 强制（不提示）
+```
+
+### 重命名
+
+```powershell
+Rename-Item -Path "C:\old.txt" -NewName "new.txt"
+```
+
+### 批量操作 — 管道 + Where-Object 过滤
+
+```powershell
+# 移动所有 .md 文件
+Get-ChildItem -Path "C:\source" -Filter "*.md" | ForEach-Object {
+    Move-Item -Path $_.FullName -Destination "D:\destination\" -Force
+}
+
+# 按文件名关键字过滤
+Get-ChildItem -Path "C:\source" |
+    Where-Object { $_.Name -like "*关键字*" } |
+    ForEach-Object {
+        Move-Item -Path $_.FullName -Destination "D:\destination\" -Force
+    }
+```
+
+### 批量操作前先 -WhatIf 预览
+
+```powershell
+# 先预览
+Remove-Item -Path "C:\temp\*.log" -WhatIf
+
+# 确认无误后执行
+Remove-Item -Path "C:\temp\*.log" -Confirm:$false
+```
+
+---
+
+## 性能规范
+
+```powershell
+# ❌ 低效：循环中 Write-Host
+foreach ($item in $largeCollection) {
+    Write-Host $item
+}
+
+# ✅ 高效：预分配集合 + Write-Output
+$results = [System.Collections.ArrayList]::new($largeCollection.Count)
+foreach ($item in $largeCollection) {
+    $null = $results.Add($item)
+}
+Write-Output $results
+```
+
+---
+
+## 模块化原则
+
+- 每个函数 **单一职责**
+- 使用参数传递数据，不使用全局变量
+- 常用逻辑封装为独立函数
+
+```powershell
+function Get-ConfigValue {
+    param([string]$Key)
+    # 实现
+}
+
+function Set-ConfigValue {
+    param([string]$Key, [string]$Value)
+    # 实现
+}
+```
+
+---
+
+## 跨平台兼容性（PowerShell Core 6+）
+
+### 路径分隔符 — 使用 Join-Path
+
+```powershell
+# ❌ Windows 特有
+$path = "$env:USERPROFILE\Documents\file.txt"
+
+# ✅ 跨平台
+$path = Join-Path -Path $env:USERPROFILE -ChildPath "Documents" -AdditionalChildPath "file.txt"
+```
+
+### 操作系统检测
+
+```powershell
+if ($IsWindows) {
+    # Windows 特有代码
+}
+elseif ($IsLinux) {
+    # Linux 特有代码
+}
+elseif ($IsMacOS) {
+    # macOS 特有代码
+}
+```
+
+---
+
+## 测试规范（Pester）
+
+```powershell
+Describe "配置管理功能" {
+    It "应正确读取配置值" {
+        $result = Get-ConfigValue -Key "AppName"
+        $result | Should -Be "MyApp"
+    }
+}
+```
+
+---
+
+## 脚本版本信息模板
+
+```powershell
+<#
+.SYNOPSIS
+    脚本功能简述
+.DESCRIPTION
+    版本: 1.0.0
+    作者: 作者名
+    更新日期: 2025-01-01
+    更改历史:
+    - 1.0.0: 初始版本
+#>
+```
+
+---
+
+## 快速检查清单
+
+生成或审查脚本时，必须确认以下各项：
+
+- [ ] 变量和函数命名遵循 PascalCase / 动词-名词格式
+- [ ] 使用 `Join-Path` 构建路径，不拼接字符串
+- [ ] 关键操作使用 `try-catch` + `-ErrorAction Stop`
+- [ ] 无硬编码密码或敏感信息
+- [ ] 参数使用 `[ValidateNotNullOrEmpty()]` 等验证属性
+- [ ] 中文路径已设置 UTF-8 编码
+- [ ] 批量删除/移动操作前使用 `-WhatIf` 预览
+- [ ] 函数提供 `.SYNOPSIS` / `.DESCRIPTION` 注释块
+- [ ] 跨平台代码使用 `$IsWindows` / `$IsLinux` 检测
+
+============================================================
+## Skill: pptx
+## 触发场景: "Use this skill any time a .pptx file is involved in any way — as input, output, or both. This inclu
+============================================================
 
 # PPTX Skill
 
@@ -3436,7 +5158,6 @@ pdftoppm -jpeg -r 150 -f N -l N output.pdf slide-fixed
 - `npm install -g pptxgenjs` - creating from scratch
 - LibreOffice (`soffice`) - PDF conversion (auto-configured for sandboxed environments via `scripts/office/soffice.py`)
 - Poppler (`pdftoppm`) - PDF to images
-
 
 ### 📎 editing.md
 
@@ -4080,14 +5801,910 @@ titleSlide.addText("My Title", { placeholder: "title" });
 - `skills/pptx/scripts/__init__.py`
 
 ============================================================
-## Skill: skill-creator
-## 触发场景: 
+## Skill: fastapi
+## 触发场景: 基于本项目 python-rules 规范的 FastAPI 全栈开发技能。 触发场景：新增/修改 API 路由、SQLModel 数据库模型、CRUD 操作、统一响应封装、 路由注册、后台任务与日志
 ============================================================
 
+# FastAPI 项目开发技能
+
+> **使用说明**：本文件是自包含的技能文档，包含所有必要的代码模板和规则。
+> 开发时请优先参照本文件中的代码片段，无需查阅其他外部文件。
+
 ---
-name: skill-creator
-description: Create new skills, modify and improve existing skills, and measure skill performance. Use when users want to create a skill from scratch, update or optimize an existing skill, run evals to test a skill, benchmark skill performance with variance analysis, or optimize a skill's description for better triggering accuracy.
+
+## 一、项目结构速查
+
+```
+app/
+├── api/            # 路由层：每个业务一个文件，__init__.py 统一注册
+│   └── __init__.py
+├── core/
+│   ├── config.py       # 系统配置（Settings）
+│   ├── response.py     # 统一响应：success / fail / html_response
+│   ├── crud.py         # CRUDBase 通用模板
+│   ├── redis.py        # Redis 客户端
+│   └── database/
+│       └── db_manager.py  # DbSessionDep, get_db_session
+├── models/         # SQLModel 表模型
+├── schemas/        # 纯 Pydantic 请求/响应模型（复杂场景）
+├── service/        # 复杂业务逻辑
+├── middleware/     # 中间件
+├── utils/          # 工具函数
+templates/          # Jinja2 HTML 模板
+static/             # 静态资源
+tests/
+└── test_base.py    # TestBase 基类
+logs/tasks/         # 任务日志文件 {task_id}.log
+```
+
 ---
+
+## 二、核心导入速查
+
+```python
+# 数据库会话（依赖注入，接口第一个参数）
+from app.core.database.db_manager import DbSessionDep, get_db_session
+
+# 统一响应
+from app.core.response import success, fail, html_response, html_response_welcome
+
+# CRUD 基类
+from app.core.crud import CRUDBase
+
+# 模型基类与主键 Mixin
+from app.models.base import BaseSqlModel, IntIDMixin, UUIDIDHexMixin, StrMixin
+
+# 任务日志
+from app.utils.task_log import task_log_manager, task_logging_context
+```
+
+---
+
+## 三、API 路由模板
+
+### 3.1 标准 CRUD 路由
+
+```python
+"""
+Product API 模块
+功能：Product 的增删改查与列表。
+"""
+from typing import Annotated
+from fastapi import APIRouter, Query
+from sqlmodel import select
+
+from ..core.database.db_manager import DbSessionDep
+from ..core.response import success, fail
+from ..core.crud import CRUDBase
+from ..dependencies import get_route_dependencies
+from ..models.product import Product, ProductQo
+
+router = APIRouter(
+    prefix="/products",
+    tags=["Product"],
+    dependencies=[*get_route_dependencies()],
+)
+
+product_crud = CRUDBase[Product, int](Product)
+
+
+@router.post("/", summary="创建 Product")
+def create_product(qo: ProductQo, session: DbSessionDep):
+    """
+    创建新 Product。
+    - **qo**: 创建参数
+    - 返回: 创建后的对象
+    """
+    obj = Product(**qo.model_dump(exclude_unset=True))
+    created = product_crud.create(session, obj)
+    return success(data=created.model_dump(mode="json"))
+
+
+@router.get("/", summary="Product 列表")
+def list_products(
+    session: DbSessionDep,
+    offset: int = 0,
+    limit: Annotated[int, Query(le=100)] = 20,
+):
+    """分页获取 Product 列表。"""
+    stmt = select(Product).offset(offset).limit(limit)
+    items = session.exec(stmt).all()
+    return success(data=[m.model_dump(mode="json") for m in items])
+
+
+@router.get("/{product_id}", summary="Product 详情")
+def get_product(product_id: int, session: DbSessionDep):
+    """根据 ID 获取单条 Product。"""
+    obj = product_crud.read(session, product_id)
+    if not obj:
+        return fail(msg="记录不存在")
+    return success(data=obj.model_dump(mode="json"))
+
+
+@router.put("/{product_id}", summary="更新 Product")
+def update_product(product_id: int, qo: ProductQo, session: DbSessionDep):
+    """更新 Product 字段。"""
+    obj = product_crud.update(
+        session, product_id, Product(**qo.model_dump(exclude_unset=True))
+    )
+    return success(data=obj.model_dump(mode="json"))
+
+
+@router.delete("/{product_id}", summary="删除 Product")
+def delete_product(product_id: int, session: DbSessionDep):
+    """软删除或物理删除 Product。"""
+    product_crud.delete(session, product_id)
+    return success(data=None)
+```
+
+### 3.2 路由注册（app/api/\_\_init\_\_.py）
+
+```python
+from fastapi import APIRouter
+from . import product, order  # 按需引入
+
+v1_router = APIRouter(prefix="/api/v1")
+v1_router.include_router(product.router)
+v1_router.include_router(order.router)
+```
+
+### 3.3 路径冲突规避
+
+```python
+# ❌ 错误：/ui 会被 /{product_id} 匹配
+router.get("/ui")
+router.get("/{product_id}")
+
+# ✅ 正确：用独立前缀区分静态路径与动态路径
+router.get("/web/ui")       # 静态页面
+router.get("/{product_id}") # 动态参数
+```
+
+---
+
+## 四、SQLModel 模型模板
+
+### 4.1 整数主键（最常用）
+
+```python
+"""
+Product 模型
+"""
+from datetime import datetime
+from pydantic import BaseModel, Field, field_serializer
+from sqlmodel import Field as SqlField, String, Integer, Text
+
+from app.models.base import BaseSqlModel, IntIDMixin
+
+
+class Product(BaseSqlModel, IntIDMixin, table=True):
+    """Product 表模型"""
+    __tablename__ = "product"
+    __table_args__ = {"comment": "产品表"}
+
+    name: str = SqlField(
+        sa_type=String(100),
+        sa_column_kwargs={"index": True, "nullable": False, "comment": "产品名称"},
+    )
+    status: int = SqlField(
+        sa_type=Integer,
+        sa_column_kwargs={"default": 0, "nullable": False, "comment": "状态 0=正常"},
+    )
+    description: str | None = SqlField(
+        default=None,
+        sa_type=Text,
+        sa_column_kwargs={"nullable": True, "comment": "描述"},
+    )
+
+    # 继承 BaseSqlModel 已有 created_at / updated_at / deleted_at 及序列化
+    model_config = {"from_attributes": True}
+
+
+class ProductQo(BaseModel):
+    """Product 创建/更新参数"""
+    name: str | None = Field(default=None, description="产品名称")
+    status: int | None = Field(default=None, ge=0, description="状态")
+    description: str | None = Field(default=None, description="描述")
+
+    model_config = {
+        "from_attributes": True,
+        "json_schema_extra": {"example": {"name": "示例产品", "status": 0}},
+    }
+```
+
+### 4.2 UUID 主键
+
+```python
+from app.models.base import BaseSqlModel, UUIDIDHexMixin
+
+class Order(BaseSqlModel, UUIDIDHexMixin, table=True):
+    __tablename__ = "order"
+    __table_args__ = {"comment": "订单表"}
+    # ... 字段定义同上
+```
+
+### 4.3 字符串主键
+
+```python
+from app.models.base import BaseSqlModel, StrMixin
+
+class Config(BaseSqlModel, StrMixin, table=True):
+    __tablename__ = "config"
+    __table_args__ = {"comment": "配置表"}
+```
+
+### 4.4 日期字段序列化（BaseSqlModel 未覆盖时手动添加）
+
+```python
+from pydantic import field_serializer
+
+@field_serializer("created_at", "updated_at", "completed_at", when_used="json")
+def serialize_datetime(self, value: datetime | None) -> str | None:
+    if value is None:
+        return None
+    return value.strftime("%Y/%m/%d %H:%M:%S")
+```
+
+### 4.5 模型序列化规则
+
+```python
+# ✅ 单条记录
+return success(data=obj.model_dump(mode="json"))
+
+# ✅ 列表记录
+return success(data=[m.model_dump(mode="json") for m in items])
+
+# ❌ 不要直接传 SQLModel 对象，会触发 JSON 序列化错误
+return success(data=obj)
+```
+
+---
+
+## 五、CRUD 基类用法
+
+```python
+from app.core.crud import CRUDBase
+from app.models.product import Product
+
+# 初始化（文件级别，不要放在函数内）
+product_crud = CRUDBase[Product, int](Product)
+
+# 创建
+created = product_crud.create(session, Product(name="test"))
+
+# 查询单条（不存在返回 None 或抛异常，视实现而定）
+obj = product_crud.read(session, product_id)
+
+# 更新（传入包含新值的实例）
+updated = product_crud.update(session, product_id, Product(name="new"))
+
+# 物理删除
+product_crud.delete(session, product_id)
+
+# 软删除（设置 deleted_at）
+product_crud.soft_delete(session, product_id)
+```
+
+> **注意**：`session` 由 FastAPI 依赖注入传入，CRUD 方法内部不再 `with session` 包裹。
+
+---
+
+## 六、统一响应格式
+
+```python
+from app.core.response import success, fail
+
+# 成功响应
+return success(data={"id": 1, "name": "test"})
+# → {"code": 0, "msg": "ok", "data": {...}}
+
+# 失败响应
+return fail(msg="参数错误")
+# → {"code": -1, "msg": "参数错误", "data": null}
+
+# 自定义错误码
+return fail(code=404, msg="记录不存在")
+```
+
+---
+
+## 七、前端页面模板
+
+### 7.1 欢迎页 HTML（配合 html_response_welcome）
+
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 text-white"
+      x-data="{ loaded: false }" x-init="loaded = true">
+    <div class="container mx-auto px-4 py-12 max-w-4xl">
+        <h1 class="text-4xl font-bold mb-4 animate__animated"
+            :class="loaded && 'animate__fadeInDown'">
+            {{ title }}
+        </h1>
+        <p class="text-lg text-slate-300 mb-8 animate__animated"
+           :class="loaded && 'animate__fadeIn'">
+            {{ subtitle }}
+        </p>
+        <div class="flex gap-4">
+            <a href="/docs"
+               class="px-6 py-3 bg-indigo-600 rounded-lg hover:bg-indigo-500 transition">
+                API 文档
+            </a>
+        </div>
+    </div>
+</body>
+</html>
+```
+
+### 7.2 路由返回 HTML
+
+```python
+from app.core.response import html_response, html_response_welcome
+from fastapi import APIRouter
+from fastapi.responses import HTMLResponse
+
+router = APIRouter(prefix="/web", tags=["前端页面"])
+
+@router.get("/ui", response_class=HTMLResponse)
+def welcome_page():
+    """欢迎页"""
+    return html_response_welcome(title="My App", subtitle="API 服务已就绪")
+```
+
+**前端技术栈规范**：
+- 样式：Tailwind CSS（CDN）
+- 交互：Alpine.js（CDN，`x-data` / `x-init` / `@click` / `x-show`）
+- 动画：Animate.css（CDN，配合 Alpine.js 动态绑定 class）
+- 响应式：优先 mobile-first，使用 `sm:` / `md:` / `lg:` 断点
+
+---
+
+## 八、任务与日志
+
+### 8.1 任务模型字段标准
+
+```python
+class Task(BaseSqlModel, UUIDIDHexMixin, table=True):
+    __tablename__ = "task"
+
+    name: str = SqlField(sa_type=String(200), sa_column_kwargs={"comment": "任务名"})
+    status: str = SqlField(
+        sa_type=String(20),
+        sa_column_kwargs={"default": "pending", "comment": "状态: pending/running/completed/failed"},
+    )
+    error_message: str | None = SqlField(
+        default=None, sa_type=Text, sa_column_kwargs={"comment": "错误信息"}
+    )
+    completed_at: datetime | None = SqlField(
+        default=None, sa_column_kwargs={"comment": "完成时间"}
+    )
+```
+
+**状态值**：`pending`（等待）/ `running`（运行中）/ `completed`（完成）/ `failed`（失败）
+
+### 8.2 任务日志使用
+
+```python
+from app.utils.task_log import task_logging_context
+
+async def run_task(task_id: str):
+    with task_logging_context(task_id) as task_logger:
+        task_logger.info("✅ 任务开始")
+        try:
+            # 执行业务逻辑
+            result = do_something()
+            task_logger.info(f"✅ 步骤完成: {result}")
+        except Exception as e:
+            task_logger.error(f"❌ 任务失败: {e}")
+            raise
+        task_logger.info("✅ 任务结束")
+```
+
+日志文件路径：`logs/tasks/{task_id}.log`，单文件最大 50MB，保留 3 个备份。
+
+---
+
+## 九、测试模板
+
+```python
+"""
+Product API 测试
+"""
+import pytest
+from fastapi.testclient import TestClient
+
+from app.core.database.db_manager import get_db_session
+from app.app_factory import create_app
+from tests.test_base import TestBase
+
+
+class TestProductApi(TestBase):
+    """Product 接口测试"""
+
+    @pytest.fixture
+    def client(self, headers):
+        app = create_app()
+        app.dependency_overrides[get_db_session] = self.get_db  # 注入 SQLite 内存库
+        with TestClient(app, headers=headers) as c:
+            yield c
+
+    def test_list_products(self, client: TestClient):
+        r = client.get("/api/v1/products/")
+        assert r.status_code == 200
+        body = r.json()
+        assert body["code"] == 0
+        assert isinstance(body["data"], list)
+
+    def test_create_and_get(self, client: TestClient):
+        # 创建
+        r = client.post("/api/v1/products/", json={"name": "测试产品", "status": 0})
+        assert r.status_code == 200
+        pid = r.json()["data"]["id"]
+
+        # 查询
+        r = client.get(f"/api/v1/products/{pid}")
+        assert r.status_code == 200
+        assert r.json()["data"]["name"] == "测试产品"
+
+    def test_update(self, client: TestClient):
+        r = client.post("/api/v1/products/", json={"name": "旧名"})
+        pid = r.json()["data"]["id"]
+        r = client.put(f"/api/v1/products/{pid}", json={"name": "新名"})
+        assert r.json()["data"]["name"] == "新名"
+
+    def test_delete(self, client: TestClient):
+        r = client.post("/api/v1/products/", json={"name": "待删除"})
+        pid = r.json()["data"]["id"]
+        r = client.delete(f"/api/v1/products/{pid}")
+        assert r.json()["code"] == 0
+```
+
+---
+
+## 十、错误处理规范
+
+```python
+# 数据库写操作必须 try/except + 回滚
+@router.post("/")
+def create_item(qo: ItemQo, session: DbSessionDep):
+    try:
+        obj = Item(**qo.model_dump(exclude_unset=True))
+        session.add(obj)
+        session.commit()
+        session.refresh(obj)
+        return success(data=obj.model_dump(mode="json"))
+    except Exception as e:
+        session.rollback()
+        return fail(msg=f"❌ 创建失败: {str(e)}")
+
+# 外部调用（HTTP、文件IO）必须 try/except
+try:
+    result = external_api_call()
+except Exception as e:
+    logger.error(f"❌ 外部调用失败: {e}")
+    raise
+```
+
+---
+
+## 十一、开发清单（新增业务功能时逐项检查）
+
+- [ ] `app/models/<name>.py` — 定义 SQLModel 表模型 + Qo
+- [ ] `app/api/<name>.py` — 定义 APIRouter，实现各接口
+- [ ] `app/api/__init__.py` — `include_router` 注册路由
+- [ ] 接口响应统一用 `success()` / `fail()`，数据用 `model_dump(mode='json')`
+- [ ] 路由无路径冲突（`/web/ui` 与 `/{id}` 等）
+- [ ] 数据库写操作有 try/except + rollback
+- [ ] `tests/test_<name>.py` — 覆盖增删改查主流程
+
+---
+
+## 十二、脚手架脚本（可选，从项目根目录执行）
+
+```bash
+# 生成 API 模块骨架
+python .cursor/skills/fastapi/scripts/new_api.py <模块名> [--path=/xxx]
+# 示例：python .cursor/skills/fastapi/scripts/new_api.py product --path=/products
+
+# 生成 SQLModel 模型骨架
+python .cursor/skills/fastapi/scripts/new_model.py <ModelName> [--id-type=int|uuid|str]
+# 示例：python .cursor/skills/fastapi/scripts/new_model.py Product --id-type=int
+```
+
+> 脚手架生成的是骨架代码，仍需根据业务补充字段与逻辑。
+
+============================================================
+## Skill: quotation-docx
+## 触发场景: 生成专业的中文项目报价单 Word 文档（.docx）。当用户提到"报价单"、"报价"、"开发报价"、"项目报价"、"做一个报价"、"生成报价文档"时，立即使用此 skill。支持任意项目类型（软件开
+============================================================
+
+# 报价单 DOCX 生成 Skill
+
+根据用户提供的项目信息，生成一份结构完整、排版专业的中文项目报价单 `.docx` 文件。
+
+---
+
+## 快速开始
+
+### 第一步：收集信息
+
+运行前先确认以下信息（没有的项可留空或用默认值）：
+
+| 字段 | 说明 | 默认值 |
+|------|------|--------|
+| `project_name` | 项目名称 | 必填 |
+| `client_name` | 客户/品牌名称 | 留空 |
+| `modules` | 功能模块列表（含说明、工期、报价） | 必填 |
+| `primary_color` | 品牌主色（HEX，不含#） | `1a5276`（深蓝） |
+| `total_price` | 总价（元） | 自动加总 |
+| `currency_words` | 总价大写 | 根据总价自动生成 |
+| `valid_days` | 报价有效期（天） | `30` |
+| `duration_weeks` | 预计工期（周） | 根据模块加总 |
+| `payment_stages` | 付款节点（比例+时机） | 三阶段 30/40/30 |
+| `milestones` | 里程碑列表 | 根据模块自动规划 |
+| `notes` | 报价说明条款 | 使用默认条款 |
+
+---
+
+## 文档结构（标准模板）
+
+生成的报价单包含以下六个章节，顺序固定：
+
+```
+封面标题块
+一、项目概述（基本信息表）
+二、功能模块报价明细（核心模块表）
+三、技术架构说明（可选，软件项目适用）
+四、费用汇总与付款方式
+五、开发里程碑计划
+六、报价说明与附加条款
+签字栏
+```
+
+---
+
+## 代码模板
+
+使用 Node.js + `docx` 库生成。安装：`npm install -g docx`
+
+输出路径：`/mnt/user-data/outputs/<文件名>.docx`
+
+生成后必须运行验证：
+```bash
+python3 /mnt/skills/public/docx/scripts/office/validate.py "<输出路径>"
+```
+
+### 完整代码框架
+
+```javascript
+const {
+  Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell,
+  AlignmentType, BorderStyle, WidthType, ShadingType,
+  VerticalAlign, LevelFormat
+} = require('docx');
+const fs = require('fs');
+
+// ── 1. 品牌色配置 ──────────────────────────────────────────────────
+// primaryColor: 品牌主色（来自用户输入，或默认深蓝 1a5276）
+const primaryColor = "8B1A1A";       // 替换为实际主色
+const headerBg    = "F5E6E6";        // 主色的极浅版（用于小标题背景）
+const lightBg     = "FDF8F8";        // 隔行浅色背景
+const borderColor = "D4A0A0";        // 表格边框色（主色的中间色调）
+const grayColor   = "666666";        // 辅助灰色文字
+
+// headerBg / lightBg / borderColor 根据 primaryColor 自动推导：
+// - headerBg: 主色 + 大量白色混合（约 10% 主色饱和度）
+// - lightBg:  比 headerBg 更浅
+// - borderColor: 主色 + 50% 白色混合
+
+// ── 2. 复用工具函数 ─────────────────────────────────────────────────
+
+const border  = { style: BorderStyle.SINGLE, size: 4, color: borderColor };
+const borders = { top: border, bottom: border, left: border, right: border };
+const noBorder  = { style: BorderStyle.NONE, size: 0, color: "FFFFFF" };
+const noBorders = { top: noBorder, bottom: noBorder, left: noBorder, right: noBorder };
+
+// 章节标题（带底部红线）
+function makeHeader(text) {
+  return new Paragraph({
+    spacing: { before: 320, after: 160 },
+    children: [new TextRun({ text, bold: true, size: 28, color: primaryColor, font: "Arial" })],
+    border: { bottom: { style: BorderStyle.SINGLE, size: 8, color: primaryColor, space: 4 } }
+  });
+}
+
+// 表头行（深色背景白字）
+function headerRow(labels, widths) {
+  return new TableRow({
+    tableHeader: true,
+    children: labels.map((label, i) =>
+      new TableCell({
+        borders,
+        width: { size: widths[i], type: WidthType.DXA },
+        shading: { fill: primaryColor, type: ShadingType.CLEAR },
+        margins: { top: 100, bottom: 100, left: 120, right: 120 },
+        verticalAlign: VerticalAlign.CENTER,
+        children: [new Paragraph({
+          alignment: AlignmentType.CENTER,
+          children: [new TextRun({ text: label, bold: true, size: 20, color: "FFFFFF", font: "Arial" })]
+        })]
+      })
+    )
+  });
+}
+
+// 普通数据行（支持隔行变色）
+function dataRow(cols, widths, isEven = false) {
+  return new TableRow({
+    children: cols.map((text, i) =>
+      new TableCell({
+        borders,
+        width: { size: widths[i], type: WidthType.DXA },
+        shading: { fill: isEven ? lightBg : "FFFFFF", type: ShadingType.CLEAR },
+        margins: { top: 80, bottom: 80, left: 120, right: 120 },
+        verticalAlign: VerticalAlign.CENTER,
+        children: [new Paragraph({
+          alignment: i >= cols.length - 2 ? AlignmentType.CENTER : AlignmentType.LEFT,
+          children: [new TextRun({ text, size: 18, font: "Arial" })]
+        })]
+      })
+    )
+  });
+}
+
+// 模块行（含多条 bullet 说明 + 可选高亮）
+function moduleRow(num, name, bullets, days, mandays, price, isHighlight = false, isEven = false) {
+  const bg = isHighlight ? "F0E0E0" : (isEven ? lightBg : "FFFFFF");
+  return new TableRow({
+    children: [
+      // 序号列
+      mkCell(num,    420,  bg, { bold: isHighlight, color: isHighlight ? primaryColor : "000000", align: AlignmentType.CENTER }),
+      // 模块名列
+      mkCell(name,   2800, bg, { bold: isHighlight, color: isHighlight ? primaryColor : "000000", size: isHighlight ? 20 : 18 }),
+      // 说明列（多 bullet）
+      new TableCell({
+        borders, width: { size: 3686, type: WidthType.DXA },
+        shading: { fill: bg, type: ShadingType.CLEAR },
+        margins: { top: 80, bottom: 80, left: 120, right: 120 },
+        children: bullets.map(b =>
+          new Paragraph({
+            numbering: { reference: "bullets", level: 0 },
+            children: [new TextRun({ text: b, size: 18, font: "Arial" })]
+          })
+        )
+      }),
+      // 工期列
+      mkCell(days,   900,  bg, { align: AlignmentType.CENTER }),
+      // 工作量列（可删除此列，见"精简版"说明）
+      mkCell(mandays,1200, bg, { align: AlignmentType.CENTER }),
+      // 报价列
+      mkCell(price,  1300, bg, { bold: isHighlight, color: isHighlight ? primaryColor : "000000", align: AlignmentType.CENTER }),
+    ]
+  });
+}
+
+// 单元格快捷创建
+function mkCell(text, width, bg, opts = {}) {
+  return new TableCell({
+    borders,
+    width: { size: width, type: WidthType.DXA },
+    shading: { fill: bg || "FFFFFF", type: ShadingType.CLEAR },
+    margins: { top: 80, bottom: 80, left: 100, right: 100 },
+    verticalAlign: VerticalAlign.CENTER,
+    children: [new Paragraph({
+      alignment: opts.align || AlignmentType.LEFT,
+      children: [new TextRun({
+        text,
+        bold:  opts.bold  || false,
+        size:  opts.size  || 18,
+        color: opts.color || "000000",
+        font:  "Arial"
+      })]
+    })]
+  });
+}
+
+// ── 3. 页面设置 ─────────────────────────────────────────────────────
+// A4 竖版，边距 1000 DXA（约 1.76cm）
+// 内容宽度 = 11906 - 1000*2 = 9906 DXA
+
+// ── 4. 模块列宽参考（总宽 9906）───────────────────────────────────
+// 含工作量列: [420, 2800, 3686, 900, 1200, 1300]  → sum=10306 ❌
+// 正确分配:   [420, 2800, 3486, 900, 1200, 1300]  → sum=10106
+// ⚠️ 实际使用时以总宽 9906 为准，各列之和必须等于表格宽度
+
+const doc = new Document({
+  numbering: {
+    config: [{
+      reference: "bullets",
+      levels: [{
+        level: 0, format: LevelFormat.BULLET, text: "·",
+        alignment: AlignmentType.LEFT,
+        style: { paragraph: { indent: { left: 360, hanging: 180 } } }
+      }]
+    }]
+  },
+  sections: [{
+    properties: {
+      page: {
+        size: { width: 11906, height: 16838 },
+        margin: { top: 1000, right: 1000, bottom: 1000, left: 1000 }
+      }
+    },
+    children: [
+      /* ── 封面标题 ── */
+      new Paragraph({ alignment: AlignmentType.CENTER, spacing: { before: 0, after: 80 },
+        children: [new TextRun({ text: "<项目名称>开发", bold: true, size: 52, color: primaryColor, font: "Arial" })] }),
+      new Paragraph({ alignment: AlignmentType.CENTER, spacing: { before: 0, after: 80 },
+        children: [new TextRun({ text: "项目报价单", bold: true, size: 40, color: primaryColor, font: "Arial" })] }),
+      new Paragraph({ alignment: AlignmentType.CENTER, spacing: { before: 0, after: 40 },
+        children: [new TextRun({ text: "（副标题，如技术栈/核心特性）", size: 24, color: grayColor, font: "Arial" })] }),
+      new Paragraph({ alignment: AlignmentType.CENTER, spacing: { before: 40, after: 400 },
+        children: [new TextRun({ text: `报价日期：${new Date().toLocaleDateString('zh-CN')}　　　有效期：30天`, size: 20, color: grayColor, font: "Arial" })] }),
+
+      /* ── 一、项目概述 ── */
+      makeHeader("一、项目概述"),
+      // 4列信息表：左列标签（headerBg背景），右列内容
+      // 包含：项目名称、适用平台、硬件对接（可选）、预计工期
+
+      /* ── 二、功能模块报价明细 ── */
+      makeHeader("二、功能模块报价明细"),
+      // moduleRow × N（每个功能模块一行）
+      // 最后一行：合计行（primaryColor背景，白字）
+
+      /* ── 三、技术架构说明（可选）── */
+      makeHeader("三、技术架构说明"),
+      // 纯软件项目适用；硬件/设计类项目可删除此节
+
+      /* ── 四、费用汇总与付款方式 ── */
+      makeHeader("四、费用汇总与付款方式"),
+      // 费用汇总表（功能开发费 + UI设计 + 测试部署 + 运维 + 总价）
+      // 付款方式表（首款30% / 中期款40% / 尾款30%）
+
+      /* ── 五、开发里程碑计划 ── */
+      makeHeader("五、开发里程碑计划"),
+      // P1-P6 阶段表
+
+      /* ── 六、报价说明 ── */
+      makeHeader("六、报价说明与附加条款"),
+      // 6-8条文字说明
+
+      /* ── 签字栏 ── */
+      // 双栏：甲方签字 + 乙方盖章
+    ]
+  }]
+});
+
+Packer.toBuffer(doc).then(buffer => {
+  fs.writeFileSync("/mnt/user-data/outputs/报价单.docx", buffer);
+  console.log("Done");
+});
+```
+
+---
+
+## 关键设计决策
+
+### 颜色推导规则
+
+当用户提供品牌主色（如从 Logo、App 截图识别）时，按以下规则推导配套色：
+
+```
+primaryColor  = 用户品牌主色（HEX）
+headerBg      = 主色 HSL 明度调至 95%（极浅背景）
+lightBg       = 主色 HSL 明度调至 98%（隔行色）
+borderColor   = 主色 HSL 明度调至 70%（边框）
+```
+
+### 列宽分配（A4，内容宽 9906 DXA）
+
+| 场景 | 列宽数组 | 说明 |
+|------|---------|------|
+| 模块明细（含工期+工作量） | [420, 3000, 3086, 900, 1200, 1300] | 标准6列 |
+| 模块明细（仅工期，删工作量） | [420, 3200, 3686, 1000, 1600] | 精简5列 |
+| 费用汇总 | [3302, 3302, 3302] | 3等分 |
+| 付款方式 | [1600, 2000, 3306, 3000] | 4列 |
+| 里程碑 | [660, 2000, 4246, 3000] | 4列 |
+| 项目概述 | [2200, 7706] | 标签+内容 |
+
+> ⚠️ 所有列宽之和必须严格等于表格宽度（9906），否则 Word 渲染异常。
+
+### 合计行样式
+
+```javascript
+// 合计行：primaryColor 背景，白色粗体文字
+new TableRow({ children: [
+  // 前几列合并（columnSpan）显示"合计"标签
+  new TableCell({ borders, columnSpan: 3, shading: { fill: primaryColor, type: ShadingType.CLEAR },
+    children: [new Paragraph({ alignment: AlignmentType.RIGHT,
+      children: [new TextRun({ text: "合　计", bold: true, size: 22, color: "FFFFFF", font: "Arial" })] })]
+  }),
+  // 合计数值列
+  new TableCell({ borders, shading: { fill: primaryColor, type: ShadingType.CLEAR },
+    children: [new Paragraph({ alignment: AlignmentType.CENTER,
+      children: [new TextRun({ text: "¥xx,xxx", bold: true, size: 22, color: "FFFFFF", font: "Arial" })] })]
+  }),
+]})
+```
+
+### 总价大写换算（中文）
+
+```javascript
+function toChinese(n) {
+  const units = ["", "万", "亿"];
+  const digits = ["零","壹","贰","叁","肆","伍","陆","柒","捌","玖"];
+  // 简化实现：仅覆盖常见报价范围（0-999万）
+  const wan = Math.floor(n / 10000);
+  const rest = n % 10000;
+  let result = "";
+  if (wan) result += digits[wan] + "万";
+  if (rest) {
+    const qian = Math.floor(rest / 1000);
+    const bai  = Math.floor((rest % 1000) / 100);
+    const shi  = Math.floor((rest % 100) / 10);
+    const ge   = rest % 10;
+    if (qian) result += digits[qian] + "仟";
+    if (bai)  result += digits[bai]  + "佰";
+    if (shi)  result += digits[shi]  + "拾";
+    if (ge)   result += digits[ge];
+  }
+  return result + "元整";
+}
+// 示例：toChinese(60000) → "陆万元整"
+```
+
+---
+
+## 精简版：删除"工作量(人天)"列
+
+客户通常不需要看人天，删掉更干净：
+
+1. `moduleRow` 函数去掉 `mandays` 参数和对应 `mkCell`
+2. `headerRow` 标签数组去掉 `"工作量(人天)"`
+3. 列宽从 6 列调整为 5 列，重新分配使总和等于 9906
+
+---
+
+## 常见陷阱
+
+- **`\n` 换行无效**：bullet 点必须用独立 `Paragraph`，不能用 `\n` 拼接
+- **`ShadingType.SOLID` 会全黑**：一律用 `ShadingType.CLEAR`
+- **列宽之和必须精确等于表格宽度**：差 1 DXA 都可能导致最后一列溢出
+- **`columnSpan` 合并列时**：被合并的列不再单独声明，宽度由 `columnSpan` 覆盖
+- **中文字体**：统一用 `"Arial"`，Word 会自动 fallback 到系统中文字体，避免字体嵌入问题
+
+---
+
+## 输出检查清单
+
+生成后逐项确认：
+
+- [ ] `node script.js` 无报错
+- [ ] `validate.py` 通过
+- [ ] 总价数字与各模块加总一致
+- [ ] 付款金额三项之和等于总价
+- [ ] 里程碑阶段数与模块数匹配
+- [ ] 文件名语义清晰（如 `咖啡机小程序报价单_v1.docx`）
+- [ ] 调用 `present_files` 将文件发送给用户
+
+### 📁 可用脚本（skills/quotation-docx/scripts/）
+
+- `skills/quotation-docx/scripts/template_60k.js`
+- `skills/quotation-docx/scripts/template_full.js`
+
+============================================================
+## Skill: skill-creator
+## 触发场景: Create new skills, modify and improve existing skills, and measure skill performance. Use when users
+============================================================
 
 # Skill Creator
 
@@ -4564,7 +7181,6 @@ Please add steps to your TodoList, if you have such a thing, to make sure you do
 
 Good luck!
 
-
 ### 📁 可用脚本（skills/skill-creator/scripts/）
 
 - `skills/skill-creator/scripts/aggregate_benchmark.py`
@@ -4579,14 +7195,8 @@ Good luck!
 
 ============================================================
 ## Skill: slack-gif-creator
-## 触发场景: 
+## 触发场景: Knowledge and utilities for creating animated GIFs optimized for Slack. Provides constraints, valida
 ============================================================
-
----
-name: slack-gif-creator
-description: Knowledge and utilities for creating animated GIFs optimized for Slack. Provides constraints, validation tools, and animation concepts. Use when users request animated GIFs for Slack like "make me a GIF of X doing Y for Slack."
-license: Complete terms in LICENSE.txt
----
 
 # Slack GIF Creator
 
@@ -4837,18 +7447,88 @@ Be creative! Combine concepts (bouncing + rotating, pulsing + sliding, etc.) and
 pip install pillow imageio numpy
 ```
 
+============================================================
+## Skill: tech-review-writer
+## 触发场景: 撰写开源 AI 工具的深度评测公众号文章。当用户提供一个开源项目（名称、GitHub 链接、README 或相关描述），需要写成深度测评、项目分析、技术博文、公众号文章时，立即使用此 skill。触发
+============================================================
+
+# 开源 AI 工具深度评测写作 Skill
+
+## 角色定位
+
+你是一名科技公众号作者，擅长写开源 AI 工具的深度评测文章。语气像「一个懂技术的朋友在聊天」，专业但不装，有独立判断，不写 PR 稿。
+
+## 写作风格要求
+
+- **语气**：口语化但不失专业，像朋友聊天。禁用"首先""综上所述""不得不说""值得一提的是""总的来说"等套话
+- **立场**：不只说好话。有亮点就夸，有硬伤就直说，带出自己的判断，不当项目的 PR 机器
+- **技术术语**：出现时用一句话解释，但不过度解释——读者有一定技术背景
+- **数据**：具体真实，宁可不写也不要编造；如果信息不足，用 [待补充] 标注
+- **排版**：句子短，段落短，每段 3-5 行
+
+## 文章结构模板
+
+章节标题格式：`01 / 02 / 03` 编号，标题简短有力。
+
+### 01 开头钩子（50-100字）
+用反差、故事或有趣的背景切入，建立情绪或好奇心。**不要**直接介绍项目，先让读者想知道"然后呢"。
+
+### 02 它为什么存在
+- 这个项目是谁做的？出发点是什么？
+- 解决了什么真实痛点？
+- 换成自己的理解说，**不要**复述 README 的营销语言
+
+### 03 它是什么
+- 先给一个直白的定义句（一句话说清楚）
+- 拆解核心设计思路或架构
+- 用类比帮助理解复杂概念
+
+### 04 最有价值的技术点（1-2 个重点）
+- 挑真正有工程价值或创新点的地方
+- 展开说清楚，给出具体细节
+- 不要泛泛而谈
+
+### 05 实打实的数据（如果有）
+- 列出性能数据
+- 说明测试方法是否可信
+- 如果数据存疑或有造假嫌疑，要指出来
+- 没有可靠数据就不写这节
+
+### 06 生态整合与实用性
+- 支持哪些工具/平台/框架
+- 安装难度如何
+- 隐私和数据安全表现
+- 实际上手体验
+
+### 07 争议或问题（不能省）
+**必须写**。明显缺陷、社区争议、宣传与实测不符的地方——直说，不要绕。
+如果没有明显问题，也要写出潜在风险或局限性。
+
+### 08 最后说说
+平衡判断：亮点是什么、问题是什么、适合什么样的人用。
+**不要**给满分，**不要**全盘否定，**不要**加运营引导语（"欢迎关注""点赞在看"等）。
+
+## 格式规范
+
+- 全文 1200-2000 字
+- 章节标题用加粗：`**01 标题**`
+- 数字用阿拉伯数字，不用中文数字
+- 代码/命令用 \`反引号\` 包裹
+- 如果信息不足以写某节，用 [待补充：需要 XX 信息] 标注，继续写其他部分
+
+## 执行方式
+
+用户给出项目信息后，**直接开始写**，不问多余问题。如果信息明显不足，在文章开头加一行说明，然后基于已有信息写完全文。
+
+信息不足的优先级判断：
+1. 有 GitHub README → 可以写完整文章
+2. 只有项目名 → 先网络搜索补充信息，再写
+3. 有具体使用体验描述 → 重点写实用性部分
 
 ============================================================
 ## Skill: theme-factory
-## 触发场景: 
+## 触发场景: Toolkit for styling artifacts with a theme. These artifacts can be slides, docs, reportings, HTML la
 ============================================================
-
----
-name: theme-factory
-description: Toolkit for styling artifacts with a theme. These artifacts can be slides, docs, reportings, HTML landing pages, etc. There are 10 pre-set themes with colors/fonts that you can apply to any artifact that has been creating, or can generate a new theme on-the-fly.
-license: Complete terms in LICENSE.txt
----
-
 
 # Theme Factory Skill
 
@@ -4903,17 +7583,10 @@ After a preferred theme is selected:
 ## Create your Own Theme
 To handle cases where none of the existing themes work for an artifact, create a custom theme. Based on provided inputs, generate a new theme similar to the ones above. Give the theme a similar name describing what the font/color combinations represent. Use any basic description provided to choose appropriate colors/fonts. After generating the theme, show it for review and verification. Following that, apply the theme as described above.
 
-
 ============================================================
 ## Skill: web-artifacts-builder
-## 触发场景: 
+## 触发场景: Suite of tools for creating elaborate, multi-component claude.ai HTML artifacts using modern fronten
 ============================================================
-
----
-name: web-artifacts-builder
-description: Suite of tools for creating elaborate, multi-component claude.ai HTML artifacts using modern frontend web technologies (React, Tailwind CSS, shadcn/ui). Use for complex artifacts requiring state management, routing, or shadcn/ui components - not for simple single-file HTML/JSX artifacts.
-license: Complete terms in LICENSE.txt
----
 
 # Web Artifacts Builder
 
@@ -4992,14 +7665,8 @@ To test/visualize the artifact, use available tools (including other Skills or b
 
 ============================================================
 ## Skill: webapp-testing
-## 触发场景: 
+## 触发场景: Toolkit for interacting with and testing local web applications using Playwright. Supports verifying
 ============================================================
-
----
-name: webapp-testing
-description: Toolkit for interacting with and testing local web applications using Playwright. Supports verifying frontend functionality, debugging UI behavior, capturing browser screenshots, and viewing browser logs.
-license: Complete terms in LICENSE.txt
----
 
 # Web Application Testing
 
@@ -5098,14 +7765,8 @@ with sync_playwright() as p:
 
 ============================================================
 ## Skill: xlsx
-## 触发场景: 
+## 触发场景: "Use this skill any time a spreadsheet file is the primary input or output. This means any task wher
 ============================================================
-
----
-name: xlsx
-description: "Use this skill any time a spreadsheet file is the primary input or output. This means any task where the user wants to: open, read, edit, or fix an existing .xlsx, .xlsm, .csv, or .tsv file (e.g., adding columns, computing formulas, formatting, charting, cleaning messy data); create a new spreadsheet from scratch or from other data sources; or convert between tabular file formats. Trigger especially when the user references a spreadsheet file by name or path — even casually (like \"the xlsx in my downloads\") — and wants something done to it or produced from it. Also trigger for cleaning or restructuring messy tabular data files (malformed rows, misplaced headers, junk data) into proper spreadsheets. The deliverable must be a spreadsheet file. Do NOT trigger when the primary deliverable is a Word document, HTML report, standalone Python script, database pipeline, or Google Sheets API integration, even if tabular data is involved."
-license: Proprietary. LICENSE.txt has complete terms
----
 
 # Requirements for Outputs
 
