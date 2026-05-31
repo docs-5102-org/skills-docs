@@ -2,7 +2,7 @@
 
 一个面向 Agent 工作流的技能集合，覆盖文档处理、视觉设计、前端开发、应用工程、技术写作、测试与自动化等场景。
 
-当前仓库共包含 **23 个 Skill**。每个 Skill 都位于 `skills/` 下的独立目录中，并通过 `SKILL.md` 描述触发场景、执行流程、约束规则和最佳实践。
+当前仓库共包含 **24 个 Skill**。每个 Skill 都位于 `skills/` 下的独立目录中，并通过 `SKILL.md` 描述触发场景、执行流程、约束规则和最佳实践。
 
 ## 安装单个 Skill
 
@@ -31,27 +31,28 @@ curl -o ~/.claude/skills/frontend-design/SKILL.md \
 |---|---|---|---|---|---|
 | 1 | 算法艺术 | [`algorithmic-art`](skills/algorithmic-art/SKILL.md) | 创意设计 | 使用 p5.js、随机种子、参数控制创建生成艺术、流场和粒子系统 | `.md`、`.html`、`.js` |
 | 2 | Ant Design | [`antd`](skills/antd/SKILL.md) | 开发技术 | 使用 antd 构建企业级 React UI、后台页面、组件和主题 | React 组件 |
-| 3 | 品牌指南 | [`brand-guidelines`](skills/brand-guidelines/SKILL.md) | 创意设计 | 应用 Anthropic 品牌色、字体和视觉格式 | 品牌化制品 |
-| 4 | 画布设计 | [`canvas-design`](skills/canvas-design/SKILL.md) | 创意设计 | 创建静态视觉艺术、海报、设计导向 PNG/PDF 作品 | `.png`、`.pdf`、`.md` |
-| 5 | UTF-8 编码 | [`cli-encoding`](skills/cli-encoding/SKILL.md) | 工具框架 | 处理文件编码安全，尤其是 Windows/PowerShell 读写源码文件 | 编码规范 |
-| 6 | 文档协作 | [`doc-coauthoring`](skills/doc-coauthoring/SKILL.md) | 内容写作 | 协作编写技术规范、PRD、设计文档、决策文档和提案 | 结构化文档 |
-| 7 | Word 文档 | [`docx`](skills/docx/SKILL.md) | 文档处理 | 创建、读取、编辑 Word 文档，处理格式、评论、修订和图像 | `.docx` |
-| 8 | 前端设计 | [`frontend-design`](skills/frontend-design/SKILL.md) | 创意设计 | 构建高质量网站、仪表板、组件和 UI 系统 | HTML/CSS/React |
-| 9 | 内部通讯 | [`internal-comms`](skills/internal-comms/SKILL.md) | 内容写作 | 撰写状态报告、3P 更新、新闻通讯、FAQ 和事故报告 | 商务文档 |
-| 10 | Java 面试官 | [`java-interviewer`](skills/java-interviewer/SKILL.md) | 教育培训 | 模拟 Java 高级工程师/架构师技术面试并给出反馈 | 面试问题与评价 |
-| 11 | MCP 构建器 | [`mcp-builder`](skills/mcp-builder/SKILL.md) | 开发技术 | 创建 MCP 服务器，让 LLM 与外部服务集成 | MCP Server |
-| 12 | PDF 处理 | [`pdf`](skills/pdf/SKILL.md) | 文档处理 | PDF 文本/表格提取、合并拆分、表单、水印、加密和 OCR | `.pdf` |
-| 13 | PowerShell | [`powershell`](skills/powershell/SKILL.md) | 开发技术 | 编写、审查、修复 PowerShell 脚本和 Windows 自动化任务 | `.ps1` |
-| 14 | PowerPoint | [`pptx`](skills/pptx/SKILL.md) | 文档处理 | 创建、读取、编辑演示文稿、幻灯片模板和演讲备注 | `.pptx` |
-| 15 | FastAPI | [`python-fastapi`](skills/python-fastapi/SKILL.md) | 开发技术 | 开发 API 路由、SQLModel 模型、CRUD、测试和 HTML 模板 | Python 服务 |
-| 16 | 报价单 DOCX | [`quotation-docx`](skills/quotation-docx/SKILL.md) | 文档处理 | 生成中文项目报价单，包含模块明细、费用汇总、付款方式和里程碑 | `.docx` |
-| 17 | 技能创建器 | [`skill-creator`](skills/skill-creator/SKILL.md) | 工具框架 | 创建、评估、改进和优化 Skill | Skill 定义 |
-| 18 | Slack GIF 创建 | [`slack-gif-creator`](skills/slack-gif-creator/SKILL.md) | 创意设计 | 创建符合 Slack 尺寸、时长和体积约束的 GIF | `.gif` |
-| 19 | 开源工具评测写作 | [`tech-review-writer`](skills/tech-review-writer/SKILL.md) | 内容写作 | 撰写开源 AI 工具深度评测、项目分析和公众号文章 | 文章 |
-| 20 | 主题工厂 | [`theme-factory`](skills/theme-factory/SKILL.md) | 创意设计 | 为文档、演示、页面等应用预设专业主题 | 主题化制品 |
-| 21 | Web 制品构建器 | [`web-artifacts-builder`](skills/web-artifacts-builder/SKILL.md) | 开发技术 | 使用 React、TypeScript、Vite、Tailwind 构建复杂 HTML 制品 | 单文件 `.html` |
-| 22 | Web 应用测试 | [`webapp-testing`](skills/webapp-testing/SKILL.md) | 开发技术 | 使用 Playwright 验证本地 Web 应用、截图和浏览器日志 | 测试报告 |
-| 23 | Excel 电子表格 | [`xlsx`](skills/xlsx/SKILL.md) | 文档处理 | 创建、编辑、清洗电子表格，处理公式、财务模型和格式 | `.xlsx`、`.csv`、`.tsv` |
+| 3 | Ant Design HTML 构建器 | [`antd-html-builder`](skills/antd-html-builder/SKILL.md) | 开发技术 | 将需求、截图或草图转为基于 Ant Design 的可运行单文件 HTML 页面 | `.html` |
+| 4 | 品牌指南 | [`brand-guidelines`](skills/brand-guidelines/SKILL.md) | 创意设计 | 应用 Anthropic 品牌色、字体和视觉格式 | 品牌化制品 |
+| 5 | 画布设计 | [`canvas-design`](skills/canvas-design/SKILL.md) | 创意设计 | 创建静态视觉艺术、海报、设计导向 PNG/PDF 作品 | `.png`、`.pdf`、`.md` |
+| 6 | UTF-8 编码 | [`cli-encoding`](skills/cli-encoding/SKILL.md) | 工具框架 | 处理文件编码安全，尤其是 Windows/PowerShell 读写源码文件 | 编码规范 |
+| 7 | 文档协作 | [`doc-coauthoring`](skills/doc-coauthoring/SKILL.md) | 内容写作 | 协作编写技术规范、PRD、设计文档、决策文档和提案 | 结构化文档 |
+| 8 | Word 文档 | [`docx`](skills/docx/SKILL.md) | 文档处理 | 创建、读取、编辑 Word 文档，处理格式、评论、修订和图像 | `.docx` |
+| 9 | 前端设计 | [`frontend-design`](skills/frontend-design/SKILL.md) | 创意设计 | 构建高质量网站、仪表板、组件和 UI 系统 | HTML/CSS/React |
+| 10 | 内部通讯 | [`internal-comms`](skills/internal-comms/SKILL.md) | 内容写作 | 撰写状态报告、3P 更新、新闻通讯、FAQ 和事故报告 | 商务文档 |
+| 11 | Java 面试官 | [`java-interviewer`](skills/java-interviewer/SKILL.md) | 教育培训 | 模拟 Java 高级工程师/架构师技术面试并给出反馈 | 面试问题与评价 |
+| 12 | MCP 构建器 | [`mcp-builder`](skills/mcp-builder/SKILL.md) | 开发技术 | 创建 MCP 服务器，让 LLM 与外部服务集成 | MCP Server |
+| 13 | PDF 处理 | [`pdf`](skills/pdf/SKILL.md) | 文档处理 | PDF 文本/表格提取、合并拆分、表单、水印、加密和 OCR | `.pdf` |
+| 14 | PowerShell | [`powershell`](skills/powershell/SKILL.md) | 开发技术 | 编写、审查、修复 PowerShell 脚本和 Windows 自动化任务 | `.ps1` |
+| 15 | PowerPoint | [`pptx`](skills/pptx/SKILL.md) | 文档处理 | 创建、读取、编辑演示文稿、幻灯片模板和演讲备注 | `.pptx` |
+| 16 | FastAPI | [`python-fastapi`](skills/python-fastapi/SKILL.md) | 开发技术 | 开发 API 路由、SQLModel 模型、CRUD、测试和 HTML 模板 | Python 服务 |
+| 17 | 报价单 DOCX | [`quotation-docx`](skills/quotation-docx/SKILL.md) | 文档处理 | 生成中文项目报价单，包含模块明细、费用汇总、付款方式和里程碑 | `.docx` |
+| 18 | 技能创建器 | [`skill-creator`](skills/skill-creator/SKILL.md) | 工具框架 | 创建、评估、改进和优化 Skill | Skill 定义 |
+| 19 | Slack GIF 创建 | [`slack-gif-creator`](skills/slack-gif-creator/SKILL.md) | 创意设计 | 创建符合 Slack 尺寸、时长和体积约束的 GIF | `.gif` |
+| 20 | 开源工具评测写作 | [`tech-review-writer`](skills/tech-review-writer/SKILL.md) | 内容写作 | 撰写开源 AI 工具深度评测、项目分析和公众号文章 | 文章 |
+| 21 | 主题工厂 | [`theme-factory`](skills/theme-factory/SKILL.md) | 创意设计 | 为文档、演示、页面等应用预设专业主题 | 主题化制品 |
+| 22 | Web 制品构建器 | [`web-artifacts-builder`](skills/web-artifacts-builder/SKILL.md) | 开发技术 | 使用 React、TypeScript、Vite、Tailwind 构建复杂 HTML 制品 | 单文件 `.html` |
+| 23 | Web 应用测试 | [`webapp-testing`](skills/webapp-testing/SKILL.md) | 开发技术 | 使用 Playwright 验证本地 Web 应用、截图和浏览器日志 | 测试报告 |
+| 24 | Excel 电子表格 | [`xlsx`](skills/xlsx/SKILL.md) | 文档处理 | 创建、编辑、清洗电子表格，处理公式、财务模型和格式 | `.xlsx`、`.csv`、`.tsv` |
 
 ## 按用途快速查找
 
@@ -59,7 +60,7 @@ curl -o ~/.claude/skills/frontend-design/SKILL.md \
 |---|---|
 | 创建或编辑 Office 文档 | `docx`、`pdf`、`pptx`、`xlsx`、`quotation-docx` |
 | 设计视觉或交互制品 | `algorithmic-art`、`canvas-design`、`frontend-design`、`brand-guidelines`、`theme-factory`、`slack-gif-creator` |
-| 开发应用、API 或集成 | `python-fastapi`、`antd`、`web-artifacts-builder`、`mcp-builder`、`powershell` |
+| 开发应用、API 或集成 | `python-fastapi`、`antd`、`antd-html-builder`、`web-artifacts-builder`、`mcp-builder`、`powershell` |
 | 测试 Web 应用 | `webapp-testing` |
 | 撰写专业内容 | `internal-comms`、`doc-coauthoring`、`tech-review-writer` |
 | 创建或维护 Skill | `skill-creator`、`cli-encoding` |
@@ -71,6 +72,7 @@ curl -o ~/.claude/skills/frontend-design/SKILL.md \
 |---|---|
 | `skills/algorithmic-art/` | 算法艺术 |
 | `skills/antd/` | Ant Design |
+| `skills/antd-html-builder/` | Ant Design HTML 构建器 |
 | `skills/brand-guidelines/` | 品牌指南 |
 | `skills/canvas-design/` | 画布设计 |
 | `skills/cli-encoding/` | UTF-8 编码 |
