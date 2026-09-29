@@ -1,0 +1,20 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "skills-docs",
+  "version": "1.0.0",
+  "description": "A curated collection of reusable agent skills for documents, design, development, writing, and automation.",
+  "author": {
+    "name": "docs-5102-org"
+  },
+  "repository": "https://github.com/docs-5102-org/skills-docs",
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Skills Docs",
+        "shortDescription": "Reusable skills for documents, design, development, and writing.",
+        "developerName": "docs-5102-org",
+        "category": "Productivity"
+      }
+    }
+  }
+}

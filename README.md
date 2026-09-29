@@ -2,7 +2,21 @@
 
 A curated collection of agent skills for documents, design, frontend development, application engineering, writing, and workflow automation.
 
-This repository currently contains **24 skills**. Each skill lives in its own directory under `skills/` and includes a `SKILL.md` file with trigger rules, workflow guidance, and implementation details.
+This repository currently contains **25 skills**. Each skill lives in its own directory under `skills/` and includes a `SKILL.md` file with trigger rules, workflow guidance, and implementation details.
+
+## Install as a Codex Plugin Marketplace
+
+The root `plugin.json` packages the existing `skills/` directory as one `skills-docs` plugin. The `.agents/plugins/marketplace.json` catalog makes it installable without moving or duplicating the skills.
+
+After committing and pushing both manifests, add the repository as a marketplace:
+
+```bash
+codex plugin marketplace add docs-5102-org/skills-docs
+```
+
+In the desktop app, you can instead add `https://github.com/docs-5102-org/skills-docs` as the marketplace URL. Leave Git ref and sparse path empty, then install `skills-docs` from the `Skills Docs` marketplace. For a local checkout, run `codex plugin marketplace add .` and restart the desktop app.
+
+The remote import reads the selected Git branch. Importing only `skills/`, or using the example sparse path `plugins/codex`, excludes the marketplace manifest.
 
 ## Install A Single Skill
 
@@ -53,12 +67,14 @@ Restart your Claude Code session after installation. If a skill includes `script
 | 22 | Web Artifacts Builder | [`web-artifacts-builder`](skills/web-artifacts-builder/SKILL.md) | Development | Multi-component HTML artifacts with React, TypeScript, Vite, Tailwind | Bundled `.html` |
 | 23 | Web Application Testing | [`webapp-testing`](skills/webapp-testing/SKILL.md) | Development | Playwright testing, screenshots, browser logs, local app verification | Test reports |
 | 24 | Excel Spreadsheets | [`xlsx`](skills/xlsx/SKILL.md) | Documents | Spreadsheets, data cleaning, formulas, financial models, formatting | `.xlsx`, `.csv`, `.tsv` |
+| 25 | MarkItDown | [`markitdown`](skills/markitdown/SKILL.md) | Documents | Convert Office files, PDFs, HTML, and other formats into Markdown for text analysis | `.md` |
 
 ## Quick Lookup
 
 | Need | Use These Skills |
 |---|---|
 | Create or edit office documents | `docx`, `pdf`, `pptx`, `xlsx`, `quotation-docx` |
+| Convert documents to Markdown | `markitdown` |
 | Design visual or interactive artifacts | `algorithmic-art`, `canvas-design`, `frontend-design`, `brand-guidelines`, `theme-factory`, `slack-gif-creator` |
 | Build apps, APIs, or integrations | `python-fastapi`, `antd`, `antd-html-builder`, `web-artifacts-builder`, `mcp-builder`, `powershell` |
 | Test web applications | `webapp-testing` |
@@ -81,6 +97,7 @@ Restart your Claude Code session after installation. If a skill includes `script
 | `skills/frontend-design/` | Frontend Design |
 | `skills/internal-comms/` | Internal Communications |
 | `skills/java-interviewer/` | Java Interviewer |
+| `skills/markitdown/` | MarkItDown |
 | `skills/mcp-builder/` | MCP Server Builder |
 | `skills/pdf/` | PDF Processing |
 | `skills/powershell/` | PowerShell |

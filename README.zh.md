@@ -2,7 +2,21 @@
 
 一个面向 Agent 工作流的技能集合，覆盖文档处理、视觉设计、前端开发、应用工程、技术写作、测试与自动化等场景。
 
-当前仓库共包含 **24 个 Skill**。每个 Skill 都位于 `skills/` 下的独立目录中，并通过 `SKILL.md` 描述触发场景、执行流程、约束规则和最佳实践。
+当前仓库共包含 **25 个 Skill**。每个 Skill 都位于 `skills/` 下的独立目录中，并通过 `SKILL.md` 描述触发场景、执行流程、约束规则和最佳实践。
+
+## 在 Codex 中作为插件市场安装
+
+仓库根目录的 `plugin.json` 将现有 `skills/` 打包为一个名为 `skills-docs` 的插件；`.agents/plugins/marketplace.json` 将它登记为可安装的插件。无需复制或移动 Skill 文件。
+
+提交并推送这两个清单文件后，在 Codex 中添加此仓库作为插件市场：
+
+```bash
+codex plugin marketplace add docs-5102-org/skills-docs
+```
+
+也可以在桌面端的“添加插件市场”界面填写仓库 URL：`https://github.com/docs-5102-org/skills-docs`。Git 引用和稀疏路径留空；添加市场后，从 `Skills Docs` 市场安装 `skills-docs` 插件。若使用本地仓库测试，可执行 `codex plugin marketplace add .`，然后重启桌面端。
+
+市场导入只识别已推送到所选分支的文件。单独导入 `skills/` 目录或将 `plugins/codex` 作为稀疏路径，会使 Codex 找不到仓库根目录的市场清单。
 
 ## 安装单个 Skill
 
@@ -53,12 +67,14 @@ curl -o ~/.claude/skills/frontend-design/SKILL.md \
 | 22 | Web 制品构建器 | [`web-artifacts-builder`](skills/web-artifacts-builder/SKILL.md) | 开发技术 | 使用 React、TypeScript、Vite、Tailwind 构建复杂 HTML 制品 | 单文件 `.html` |
 | 23 | Web 应用测试 | [`webapp-testing`](skills/webapp-testing/SKILL.md) | 开发技术 | 使用 Playwright 验证本地 Web 应用、截图和浏览器日志 | 测试报告 |
 | 24 | Excel 电子表格 | [`xlsx`](skills/xlsx/SKILL.md) | 文档处理 | 创建、编辑、清洗电子表格，处理公式、财务模型和格式 | `.xlsx`、`.csv`、`.tsv` |
+| 25 | MarkItDown | [`markitdown`](skills/markitdown/SKILL.md) | 文档处理 | 将 Office、PDF、HTML 等文件转换为 Markdown，供文本分析使用 | `.md` |
 
 ## 按用途快速查找
 
 | 我需要 | 推荐 Skill |
 |---|---|
 | 创建或编辑 Office 文档 | `docx`、`pdf`、`pptx`、`xlsx`、`quotation-docx` |
+| 将文档转换为 Markdown | `markitdown` |
 | 设计视觉或交互制品 | `algorithmic-art`、`canvas-design`、`frontend-design`、`brand-guidelines`、`theme-factory`、`slack-gif-creator` |
 | 开发应用、API 或集成 | `python-fastapi`、`antd`、`antd-html-builder`、`web-artifacts-builder`、`mcp-builder`、`powershell` |
 | 测试 Web 应用 | `webapp-testing` |
@@ -81,6 +97,7 @@ curl -o ~/.claude/skills/frontend-design/SKILL.md \
 | `skills/frontend-design/` | 前端设计 |
 | `skills/internal-comms/` | 内部通讯 |
 | `skills/java-interviewer/` | Java 面试官 |
+| `skills/markitdown/` | MarkItDown |
 | `skills/mcp-builder/` | MCP 构建器 |
 | `skills/pdf/` | PDF 处理 |
 | `skills/powershell/` | PowerShell |
