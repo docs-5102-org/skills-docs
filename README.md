@@ -2,7 +2,7 @@
 
 A curated collection of agent skills for documents, design, frontend development, application engineering, writing, and workflow automation.
 
-This repository currently contains **27 skills**. Each skill lives in its own directory under `skills/` and includes a `SKILL.md` file with trigger rules, workflow guidance, and implementation details.
+This repository currently contains **28 skills**. Each skill lives in its own directory under `skills/` and includes a `SKILL.md` file with trigger rules, workflow guidance, and implementation details.
 
 ## Install as a Codex Plugin Marketplace
 
@@ -37,7 +37,7 @@ curl -o ~/.claude/skills/frontend-design/SKILL.md \
   https://raw.githubusercontent.com/docs-5102-org/skills-docs/main/skills/frontend-design/SKILL.md
 ```
 
-Restart your Claude Code session after installation. If a skill includes `scripts/`, `templates/`, or `references/`, download those supporting files as needed.
+Restart your Claude Code session after installation. If a skill includes `scripts/`, `templates/`, or `references/`, download those supporting files as needed. PPT Master requires its complete directory, including attribution files and `requirements.txt`; see its [setup notes](skills/ppt-master/UPSTREAM.md).
 
 ## Skill Catalog
 
@@ -70,15 +70,17 @@ Restart your Claude Code session after installation. If a skill includes `script
 | 25 | MarkItDown | [`markitdown`](skills/markitdown/SKILL.md) | Documents | Convert Office files, PDFs, HTML, and other formats into Markdown for text analysis | `.md` |
 | 26 | Humanizer | [`humanizer`](skills/humanizer/SKILL.md) | Writing | Edit AI-sounding prose while preserving the writer's meaning | Revised prose |
 | 27 | Guizang PPT Skill | [`guizang-ppt-skill`](skills/guizang-ppt-skill/SKILL.md) | Creative & Design | Generate single-file HTML slide decks with templates and presenter mode | `.html` |
+| 28 | PPT Master | [`ppt-master`](skills/ppt-master/SKILL.md) | Documents | Generate and edit native PowerPoint decks with templates, charts, animation, and narration | `.pptx` |
 
 The Humanizer skill is copied from [blader/humanizer](https://github.com/blader/humanizer/blob/main/SKILL.md) under its [MIT license](skills/humanizer/LICENSE.txt).
 Guizang PPT Skill is bundled from [op7418/guizang-ppt-skill](https://github.com/op7418/guizang-ppt-skill), including its templates, references, scripts, and [AGPL-3.0 license](skills/guizang-ppt-skill/LICENSE). The imported revision and local packaging change are recorded in [UPSTREAM.md](skills/guizang-ppt-skill/UPSTREAM.md).
+PPT Master is bundled from [hugohe3/ppt-master](https://github.com/hugohe3/ppt-master/tree/main/skills/ppt-master) with its scripts, templates, references, workflows, dependencies, and [MIT license](skills/ppt-master/LICENSE). Its revision and Python setup notes are recorded in [UPSTREAM.md](skills/ppt-master/UPSTREAM.md).
 
 ## Quick Lookup
 
 | Need | Use These Skills |
 |---|---|
-| Create or edit office documents | `docx`, `pdf`, `pptx`, `xlsx`, `quotation-docx` |
+| Create or edit office documents | `docx`, `pdf`, `pptx`, `ppt-master`, `xlsx`, `quotation-docx` |
 | Convert documents to Markdown | `markitdown` |
 | Edit AI-sounding prose | `humanizer` |
 | Design visual or interactive artifacts | `algorithmic-art`, `canvas-design`, `frontend-design`, `guizang-ppt-skill`, `brand-guidelines`, `theme-factory`, `slack-gif-creator` |
@@ -109,6 +111,7 @@ Guizang PPT Skill is bundled from [op7418/guizang-ppt-skill](https://github.com/
 | `skills/mcp-builder/` | MCP Server Builder |
 | `skills/pdf/` | PDF Processing |
 | `skills/powershell/` | PowerShell |
+| `skills/ppt-master/` | PPT Master |
 | `skills/pptx/` | PowerPoint |
 | `skills/python-fastapi/` | FastAPI |
 | `skills/quotation-docx/` | Quotation DOCX |

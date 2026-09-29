@@ -2,7 +2,7 @@
 
 一个面向 Agent 工作流的技能集合，覆盖文档处理、视觉设计、前端开发、应用工程、技术写作、测试与自动化等场景。
 
-当前仓库共包含 **27 个 Skill**。每个 Skill 都位于 `skills/` 下的独立目录中，并通过 `SKILL.md` 描述触发场景、执行流程、约束规则和最佳实践。
+当前仓库共包含 **28 个 Skill**。每个 Skill 都位于 `skills/` 下的独立目录中，并通过 `SKILL.md` 描述触发场景、执行流程、约束规则和最佳实践。
 
 ## 在 Codex 中作为插件市场安装
 
@@ -37,7 +37,7 @@ curl -o ~/.claude/skills/frontend-design/SKILL.md \
   https://raw.githubusercontent.com/docs-5102-org/skills-docs/main/skills/frontend-design/SKILL.md
 ```
 
-安装完成后重启 Claude Code 会话即可识别。若 Skill 包含 `scripts/`、`templates/` 或 `references/` 等配套目录，请按需同步下载。
+安装完成后重启 Claude Code 会话即可识别。若 Skill 包含 `scripts/`、`templates/` 或 `references/` 等配套目录，请按需同步下载。PPT Master 必须保留完整目录，包括署名文件和 `requirements.txt`；详见其[安装说明](skills/ppt-master/UPSTREAM.md)。
 
 ## Skill 总览
 
@@ -70,15 +70,17 @@ curl -o ~/.claude/skills/frontend-design/SKILL.md \
 | 25 | MarkItDown | [`markitdown`](skills/markitdown/SKILL.md) | 文档处理 | 将 Office、PDF、HTML 等文件转换为 Markdown，供文本分析使用 | `.md` |
 | 26 | Humanizer | [`humanizer`](skills/humanizer/SKILL.md) | 内容写作 | 修改有 AI 写作痕迹的文字，同时保留原意 | 修订后的文字 |
 | 27 | 归藏 PPT Skill | [`guizang-ppt-skill`](skills/guizang-ppt-skill/SKILL.md) | 创意设计 | 用模板生成单文件 HTML 演讲幻灯片，支持演讲者模式 | `.html` |
+| 28 | PPT Master | [`ppt-master`](skills/ppt-master/SKILL.md) | 文档处理 | 用模板、图表、动画和旁白生成或编辑原生 PowerPoint 演示文稿 | `.pptx` |
 
 Humanizer 技能原文来自 [blader/humanizer](https://github.com/blader/humanizer/blob/main/SKILL.md)，按其 [MIT 许可证](skills/humanizer/LICENSE.txt)收录。
 归藏 PPT Skill 来自 [op7418/guizang-ppt-skill](https://github.com/op7418/guizang-ppt-skill)，已收录模板、参考资料、校验脚本及 [AGPL-3.0 许可证](skills/guizang-ppt-skill/LICENSE)。上游提交与本地打包调整见 [UPSTREAM.md](skills/guizang-ppt-skill/UPSTREAM.md)。
+PPT Master 来自 [hugohe3/ppt-master](https://github.com/hugohe3/ppt-master/tree/main/skills/ppt-master)，已收录脚本、模板、参考资料、工作流、依赖文件及 [MIT 许可证](skills/ppt-master/LICENSE)。上游版本和 Python 安装说明见 [UPSTREAM.md](skills/ppt-master/UPSTREAM.md)。
 
 ## 按用途快速查找
 
 | 我需要 | 推荐 Skill |
 |---|---|
-| 创建或编辑 Office 文档 | `docx`、`pdf`、`pptx`、`xlsx`、`quotation-docx` |
+| 创建或编辑 Office 文档 | `docx`、`pdf`、`pptx`、`ppt-master`、`xlsx`、`quotation-docx` |
 | 将文档转换为 Markdown | `markitdown` |
 | 修改有 AI 写作痕迹的文字 | `humanizer` |
 | 设计视觉或交互制品 | `algorithmic-art`、`canvas-design`、`frontend-design`、`guizang-ppt-skill`、`brand-guidelines`、`theme-factory`、`slack-gif-creator` |
@@ -109,6 +111,7 @@ Humanizer 技能原文来自 [blader/humanizer](https://github.com/blader/humani
 | `skills/mcp-builder/` | MCP 构建器 |
 | `skills/pdf/` | PDF 处理 |
 | `skills/powershell/` | PowerShell |
+| `skills/ppt-master/` | PPT Master |
 | `skills/pptx/` | PowerPoint |
 | `skills/python-fastapi/` | FastAPI |
 | `skills/quotation-docx/` | 报价单 DOCX |
