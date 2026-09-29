@@ -2,7 +2,7 @@
 
 一个面向 Agent 工作流的技能集合，覆盖文档处理、视觉设计、前端开发、应用工程、技术写作、测试与自动化等场景。
 
-当前仓库共包含 **25 个 Skill**。每个 Skill 都位于 `skills/` 下的独立目录中，并通过 `SKILL.md` 描述触发场景、执行流程、约束规则和最佳实践。
+当前仓库共包含 **27 个 Skill**。每个 Skill 都位于 `skills/` 下的独立目录中，并通过 `SKILL.md` 描述触发场景、执行流程、约束规则和最佳实践。
 
 ## 在 Codex 中作为插件市场安装
 
@@ -68,6 +68,11 @@ curl -o ~/.claude/skills/frontend-design/SKILL.md \
 | 23 | Web 应用测试 | [`webapp-testing`](skills/webapp-testing/SKILL.md) | 开发技术 | 使用 Playwright 验证本地 Web 应用、截图和浏览器日志 | 测试报告 |
 | 24 | Excel 电子表格 | [`xlsx`](skills/xlsx/SKILL.md) | 文档处理 | 创建、编辑、清洗电子表格，处理公式、财务模型和格式 | `.xlsx`、`.csv`、`.tsv` |
 | 25 | MarkItDown | [`markitdown`](skills/markitdown/SKILL.md) | 文档处理 | 将 Office、PDF、HTML 等文件转换为 Markdown，供文本分析使用 | `.md` |
+| 26 | Humanizer | [`humanizer`](skills/humanizer/SKILL.md) | 内容写作 | 修改有 AI 写作痕迹的文字，同时保留原意 | 修订后的文字 |
+| 27 | 归藏 PPT Skill | [`guizang-ppt-skill`](skills/guizang-ppt-skill/SKILL.md) | 创意设计 | 用模板生成单文件 HTML 演讲幻灯片，支持演讲者模式 | `.html` |
+
+Humanizer 技能原文来自 [blader/humanizer](https://github.com/blader/humanizer/blob/main/SKILL.md)，按其 [MIT 许可证](skills/humanizer/LICENSE.txt)收录。
+归藏 PPT Skill 来自 [op7418/guizang-ppt-skill](https://github.com/op7418/guizang-ppt-skill)，已收录模板、参考资料、校验脚本及 [AGPL-3.0 许可证](skills/guizang-ppt-skill/LICENSE)。上游提交与本地打包调整见 [UPSTREAM.md](skills/guizang-ppt-skill/UPSTREAM.md)。
 
 ## 按用途快速查找
 
@@ -75,7 +80,8 @@ curl -o ~/.claude/skills/frontend-design/SKILL.md \
 |---|---|
 | 创建或编辑 Office 文档 | `docx`、`pdf`、`pptx`、`xlsx`、`quotation-docx` |
 | 将文档转换为 Markdown | `markitdown` |
-| 设计视觉或交互制品 | `algorithmic-art`、`canvas-design`、`frontend-design`、`brand-guidelines`、`theme-factory`、`slack-gif-creator` |
+| 修改有 AI 写作痕迹的文字 | `humanizer` |
+| 设计视觉或交互制品 | `algorithmic-art`、`canvas-design`、`frontend-design`、`guizang-ppt-skill`、`brand-guidelines`、`theme-factory`、`slack-gif-creator` |
 | 开发应用、API 或集成 | `python-fastapi`、`antd`、`antd-html-builder`、`web-artifacts-builder`、`mcp-builder`、`powershell` |
 | 测试 Web 应用 | `webapp-testing` |
 | 撰写专业内容 | `internal-comms`、`doc-coauthoring`、`tech-review-writer` |
@@ -95,6 +101,8 @@ curl -o ~/.claude/skills/frontend-design/SKILL.md \
 | `skills/doc-coauthoring/` | 文档协作 |
 | `skills/docx/` | Word 文档 |
 | `skills/frontend-design/` | 前端设计 |
+| `skills/guizang-ppt-skill/` | 归藏 PPT Skill |
+| `skills/humanizer/` | Humanizer |
 | `skills/internal-comms/` | 内部通讯 |
 | `skills/java-interviewer/` | Java 面试官 |
 | `skills/markitdown/` | MarkItDown |

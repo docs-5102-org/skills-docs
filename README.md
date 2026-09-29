@@ -2,7 +2,7 @@
 
 A curated collection of agent skills for documents, design, frontend development, application engineering, writing, and workflow automation.
 
-This repository currently contains **25 skills**. Each skill lives in its own directory under `skills/` and includes a `SKILL.md` file with trigger rules, workflow guidance, and implementation details.
+This repository currently contains **27 skills**. Each skill lives in its own directory under `skills/` and includes a `SKILL.md` file with trigger rules, workflow guidance, and implementation details.
 
 ## Install as a Codex Plugin Marketplace
 
@@ -68,6 +68,11 @@ Restart your Claude Code session after installation. If a skill includes `script
 | 23 | Web Application Testing | [`webapp-testing`](skills/webapp-testing/SKILL.md) | Development | Playwright testing, screenshots, browser logs, local app verification | Test reports |
 | 24 | Excel Spreadsheets | [`xlsx`](skills/xlsx/SKILL.md) | Documents | Spreadsheets, data cleaning, formulas, financial models, formatting | `.xlsx`, `.csv`, `.tsv` |
 | 25 | MarkItDown | [`markitdown`](skills/markitdown/SKILL.md) | Documents | Convert Office files, PDFs, HTML, and other formats into Markdown for text analysis | `.md` |
+| 26 | Humanizer | [`humanizer`](skills/humanizer/SKILL.md) | Writing | Edit AI-sounding prose while preserving the writer's meaning | Revised prose |
+| 27 | Guizang PPT Skill | [`guizang-ppt-skill`](skills/guizang-ppt-skill/SKILL.md) | Creative & Design | Generate single-file HTML slide decks with templates and presenter mode | `.html` |
+
+The Humanizer skill is copied from [blader/humanizer](https://github.com/blader/humanizer/blob/main/SKILL.md) under its [MIT license](skills/humanizer/LICENSE.txt).
+Guizang PPT Skill is bundled from [op7418/guizang-ppt-skill](https://github.com/op7418/guizang-ppt-skill), including its templates, references, scripts, and [AGPL-3.0 license](skills/guizang-ppt-skill/LICENSE). The imported revision and local packaging change are recorded in [UPSTREAM.md](skills/guizang-ppt-skill/UPSTREAM.md).
 
 ## Quick Lookup
 
@@ -75,7 +80,8 @@ Restart your Claude Code session after installation. If a skill includes `script
 |---|---|
 | Create or edit office documents | `docx`, `pdf`, `pptx`, `xlsx`, `quotation-docx` |
 | Convert documents to Markdown | `markitdown` |
-| Design visual or interactive artifacts | `algorithmic-art`, `canvas-design`, `frontend-design`, `brand-guidelines`, `theme-factory`, `slack-gif-creator` |
+| Edit AI-sounding prose | `humanizer` |
+| Design visual or interactive artifacts | `algorithmic-art`, `canvas-design`, `frontend-design`, `guizang-ppt-skill`, `brand-guidelines`, `theme-factory`, `slack-gif-creator` |
 | Build apps, APIs, or integrations | `python-fastapi`, `antd`, `antd-html-builder`, `web-artifacts-builder`, `mcp-builder`, `powershell` |
 | Test web applications | `webapp-testing` |
 | Write professional content | `internal-comms`, `doc-coauthoring`, `tech-review-writer` |
@@ -95,6 +101,8 @@ Restart your Claude Code session after installation. If a skill includes `script
 | `skills/doc-coauthoring/` | Doc Coauthoring |
 | `skills/docx/` | DOCX Documents |
 | `skills/frontend-design/` | Frontend Design |
+| `skills/guizang-ppt-skill/` | Guizang PPT Skill |
+| `skills/humanizer/` | Humanizer |
 | `skills/internal-comms/` | Internal Communications |
 | `skills/java-interviewer/` | Java Interviewer |
 | `skills/markitdown/` | MarkItDown |
